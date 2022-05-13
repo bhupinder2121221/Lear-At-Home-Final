@@ -1,0 +1,143 @@
+{% extends 'base.html' %} {% load static %} {% block blogs %}
+<div class="container" style="padding: 0px">
+  <div class="container text-center mt-3" style="padding: 0px">
+    {% if nodata %}
+    <h1>No Data Found!</h1>
+    <div class="text-disabled">Please try after sometime.</div>
+    {% endif %}
+  </div>
+  {% if not nodata %}
+  <div class="container" style="padding: 0px">
+    {%for post in posts%}
+
+    <div class="card card-space" style="width: 90%; margin: auto">
+      {% if post.image.url %}
+      <img
+        src="{{ post.image.url }}"
+        class="card-img-top"
+        alt="{{ post.image.url }}"
+      />
+      {% endif %} {% if not post.image.url %}
+      <img
+        src="{{ post.image }}"
+        class="card-img-top"
+        alt="{{ post.image.url }}"
+      />
+      {% endif %}
+
+      <div class="card-body">
+        <h5 class="card-title">Post Title : {{post.title}}</h5>
+        <p class="card-text">Details in Brief: {{post.content}} ...</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-end" style="border: none">
+          <span style="float: left">{{ post.author }}</span>
+          <span style="float: right">{{ post.dateTime }}</span>
+        </li>
+
+        <li class="list-group-item text-start">
+          {% if not friendpost %} {% if post.liked %}
+          <div class="like">
+            <a
+              style="text-decoration: none; color: red; font-weight: bolder"
+              href="{% url 'postlikeview' pageno post.post_id likeredirect %}"
+              ><span
+                ><img
+                  height="25"
+                  style="margin-right: 4px; float: left"
+                  src="{% static 'images/like.png' %}"
+              /></span>
+              <h5
+                style="
+                  color: red;
+                  font-weight: bolder;
+                  display: inline-blocks;
+                  float: left;
+                "
+              >
+                Liked
+              </h5></a
+            >
+          </div>
+          {% endif %} {% if not post.liked %}
+          <div class="like">
+            <a
+              style="text-decoration: none; color: red"
+              href="{% url 'postlikeview' pageno post.post_id likeredirect %}"
+              ><span
+                ><img
+                  height="25"
+                  style="margin-right: 4px"
+                  src="{% static 'images/like.png' %}" /></span
+              >Like
+            </a>
+          </div>
+          {% endif %} {% if post.isMyPost %}
+          <div class="followed">
+            <div class="dropdown">
+              <button
+                class="btn"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                ...
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Edit</a></li>
+                <li><a class="dropdown-item" hre="#">Delete</a></li>
+              </ul>
+            </div>
+          </div>
+          {% endif %} {% if post.following %}
+          <div class="container">
+            {% if not post.isMyPost %}
+            <div class="followed">
+              <span>
+                <img
+                  height="25"
+                  style="margin-right: 4px"
+                  src="{% static 'images/followers.png'%}"
+                />
+              </span>
+              <a
+                style="text-decoration: none; color: grey"
+                href="{% url 'followedURL' pageno post.author likeredirect %}"
+                >Follwed</a
+              >
+            </div>
+
+            {% endif %}
+          </div>
+          {% endif %} {% if not post.following %}
+          <div class="container">
+            {% if not post.isMyPost %}
+            <div class="follow text-end" style="width: 50%; float: right">
+              <span>
+                <img
+                  height="25"
+                  style="margin-right: 4px"
+                  src="{% static 'images/followers.png'%}"
+                />
+              </span>
+              <a
+                style="color: red; text-decoration: none"
+                href="{% url 'followedURL' pageno post.author likeredirect %}"
+                >Follow</a
+              >
+            </div>
+            {% endif %}
+          </div>
+          {% endif %} {% endif %}
+        </li>
+      </ul>
+    </div>
+    <br />
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock blogs %}
+
+<!--  -->

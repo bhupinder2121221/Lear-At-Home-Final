@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Learn At Home</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+</head>
+<body style="background-color: #f69082;margin: auto;">
+    <div class="container-fluid" style="max-width: 628px;">
+        <!-- profile section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="container-fluid">
+                        <div id="profilesectionId" class="profile-section" style="display: none;">
+                             {% if not user %}
+                            <div class="col-12">
+                                <div class="container-fluid" style="position: fixed;">
+                                <h5 class="text-center" style="padding-top: 20px; display:inline-block ;">Profile</h5>
+                                <div onclick="navbarsection()" class="navbarclosebtn">X</div>
+                                
+                                <div class="card profile" style="border:none;width:100%" >
+                                    <img class="profilePic" src="{% static 'images/anonymous.jpeg'%}" alt="profile pic" />
+                                     <div class="card-body">
+                                      <p class="card-text text-center">Anonymous</p>
+                                      <p class="card-text text-center"><span><img height=30 src=" {% static 'images/like.png' %}" />  </span><span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.3rem;
+                                        font-weight: bold;">Like</span><span style="    font-size: 1.3rem;
+    font-weight: bold;"> 34</span></p>
+                                      <p class="card-text text-center"><span><img height=30 src="{% static 'images/followers.png' %}" />  <span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.3rem;
+                                        font-weight: bold;">Following</span><span style="    font-size: 1.3rem;
+    font-weight: bold;">45</span></p>
+                                      <p class="card-text text-center"><span><img height=30 src="{% static 'images/following.png' %}" />  <span style="color:red;                      margin-right: 7px;
+                                        font-size: 1.3rem;
+                                        font-weight: bold;">Followers</span><span style="    font-size: 1.3rem;
+    font-weight: bold;">78</span><span></span></p> 
+                                      
+                                     
+                                    </div>
+                                    <a class="btn btn-danger " href="/login" >Login</a>
+                      
+                                  </div>
+                                  
+                                  </div>
+                            </div>
+                            {% endif %}
+                            {% if user %}
+                            <div class="col-3">
+                                <div class="container-fluid" style="position: fixed;">
+                                <h5 class="text-center" style="padding-top: 20px;">Profile</h5>
+                                <div onclick="navbarsection()" class="navbarclosebtn">X</div>
+                                
+                                <div class="card profile" style="width: 100%;border:none;" >
+                                    <img class="profilePic" src="{{profile.profile}}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                      <p class="card-text text-center">{{profile.email}}</p>
+                                      <p class="card-text text-center"><span><img height=30 src=" {% static 'images/like.png' %}" />  </span><span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.3rem;
+                                        font-weight: bold;">Likes </span><span style="    font-size: 1.3rem;
+    font-weight: bold;">{{otherdata.likes}}</span> </p>
+                                      <p class="card-text text-center"><span><img height=30 src="{% static 'images/followers.png' %}" />  <span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.1rem;
+                                        font-weight: bold;">Following </span> <span style="    font-size: 1.3rem;
+    font-weight: bold;">{{otherdata.following}}</span></p>
+                                      <p class="card-text text-center"><span><img height=30 src="{% static 'images/following.png' %}" />  <span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.1rem;
+                                        font-weight: bold;">Folowers </span><span style="    font-size: 1.1rem;
+    font-weight: bold;">{{otherdata.followers}}</span></p>
+    <a href="{% url 'orderview' %}" style="text-decoration: none;">
+                                      <p class="card-text text-center"><span> <span style="color: red;
+                                        margin-right: 7px;
+                                        font-size: 1.1rem;
+                                        font-weight: bold;"><img height=30 src="{% static 'images/orders.png' %}" />My Orders</span></p> 
+                                        </a>
+                                    </div>
+                                    <a class="btn btn-danger " href="/logout" >Logout</a>
+                      
+                                  </div>
+                                 
+                                  </div>
+                                  
+                            </div>
+                            {% endif %}
+                              </div> 
+                             
+                        </div>
+                </div>
+        </div>
+        
+        <!-- profile section -->
+
+
+        <div class="row " style="min-height: 100vh;">
+            <div class="col-12">
+                <h1  class="text-start ml-2 text-light" style="font-size: 2.2rem;display: inline-block;margin-top: 4px;margin-left: 10px;">Learn At Home</h1>
+                <span  class="profilemenu">
+                    {% if not user %}
+                    <img onclick="navbarsection()" class="profilelinkimage" src="{% static 'images/anonymous.jpeg'%}" alt="profile pic" />
+                    {% endif %}
+                    {% if user %}
+                   
+                    <img onclick="navbarsection()" class="profilelinkimage" src="{{profile.profile}}" alt="profile pic" />
+                   
+                    {% endif %}
+                </span>
+            </div>
+            <div class="col-12" style="padding: 0px;">
+                 <div class="container main-page" style="min-height: 100vh;padding-left: 0px;padding-right: 0px;">
+                            <!-- friend list -->
+                            <!-- <div class="col-2">
+                                <h5 class="text-center" style="padding-top: 20px;">Friends</h5>
+                                
+                                <div class="container-fluid followers-space" >
+                                    {% if friendlist %}
+                                    <ul class="list-group list-group-flush">
+                                        {% for friendEmail,friendName in friendlist.items %}
+                                        <li class="list-group-item"><a style="text-decoration: none;color:red;text-transform: capitalize;" href="/page-1/friendPost-{{friendEmail}}/">{{friendName}}</a></li>
+                                        {% endfor %}
+                                       
+                                        <button class="btn btn-danger">Show all friends</button>
+                                    
+                                    </ul>
+                                    {% endif %}
+                                    {% if not friendlist %}
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">No Freind</li>
+                                    </ul>
+                                    {% endif %}
+                                        </div>
+                            </div> -->
+                            <!-- end friend list -->                            
+                                
+                                <div class="container-fluid navbar-space">
+                                    <!-- <a style="text-decoration: none;text-transform: capitalize; color: #f69082;font-weight: bolder;font-size: 1.5rem; background-color: antiquewhite; padding: 5px; border:2ps solid #f69082;border-radius: 5px;" href="/">Home</a> -->
+                                    
+                                    <!-- navbar  -->
+                                    <ul class="nav nav-tabs" style="margin-top: 0px;">
+                                        <li class="nav-item navbarlinks">
+                                          <a class="nav-link {% if following %} active bg-danger-custom text-light {% else %} text-danger {% endif %}" aria-current="page" href="{% url 'friendlistView' %}">Friends</a>
+                                        </li>
+                                        <li class="nav-item navbarlinks">
+                                          <a class="nav-link {% if myfeeds %} active bg-danger-custom text-light {% else %} text-danger {% endif %}" href="/">My Feeds</a>
+                                        </li>
+                                        <li class="nav-item navbarlinks">
+                                          <a class="nav-link {% if classroom %} active bg-danger-custom text-light {% else %} text-danger {% endif %}" href="/classroom">Classroom</a>
+                                        </li>
+                                        
+                                      </ul>
+                                    <!-- end navbar -->
+                                    {% if not nodata%}
+                                    <div class="container" style="padding: 10px;">
+                                    {% if  myfeeds %}
+                                    
+                                    <div style="display: inline-block; float: left;">
+                                        <img height=25 src="{% static 'images/new.png' %}">
+                                        <a href="{% url 'newPostUrl' %}" class="btn btn-danger newPostBtn">New Post</a>
+                                    </div>
+                                    <div style="display: inline-block; float: right;">
+                                        <img height=25 src="{% static 'images/filter.png' %}">
+                                        <!-- <button class="btn btn-danger filterBtn"> Filter</button> -->
+                                        <div class="dropdown filterBtn" style="display: contents;">
+                                            <button class="btn btn-danger dropdown-toggle filterBtn" type="button" id="dropdownMenuButton12" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Filter
+                                            </button>
+                                            <p style="display: inline-block;margin-top: 5px;">{{filtertag}}</p>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton12">
+                                             {% if user %}
+                                             {% if not friendpost %}
+                                                <li><a class="dropdown-item" href="{{filterpath}}/filter-following/">Following</a></li>
+                                                <li><a class="dropdown-item" href="{{filterpath}}/filter-myblog/">My Blogs</a></li>
+                                              {% endif %}
+                                              {% endif %}
+                                                <li><a class="dropdown-item" href="{{filterpath}}/filter-desc/">Newest</a></li>
+                                              <li><a class="dropdown-item" href="{{filterpath}}/filter-asc/">Oldest</a></li>
+                                            </ul>
+                                 
+                                          </div>
+                                    </div>
+
+                                    
+                                    {% endif %}
+                                    </div>
+                                    {% endif %}
+                                    
+                                    
+                                </div>
+                                
+                                    <!-- next previous btns -->
+                                    <!-- <div class="container-fluid " style="height: 65px;">
+                                       
+                                         {% if friendpost %}
+                                         {% if posts.has_next %}
+                                             <a class="btn btn-danger text-start rightbtn"  href="/page-{{ posts.next_page_number }}/friendPost-{{profile.email}}/{{filterapplied}}">Next Page</a>
+                                         {% endif %}
+                                         {% if posts.has_previous %}
+                                             <a class="btn btn-danger text-end leftbtn" href="/page-{{ posts.previous_page_number }}/friendPost-{{profile.email}}/{{filterapplied}}">Previous</a>
+                                             {% endif %}
+                                             
+                                         {% endif %}
+     
+                                         {% if not friendpost %}
+                                        {% if posts.has_next %}
+                                             <a class="btn btn-danger text-start rightbtn" href="/page-{{ posts.next_page_number }}/{{filterapplied}}">next</a>
+                                         {% endif %}
+                                         {% if posts.has_previous %}
+                                             <a class="btn btn-danger text-end leftbtn"  href="/page-{{ posts.previous_page_number }}/{{filterapplied}}">Previous</a>
+                                             {% endif %}
+                                             
+                                         {% endif%}
+                                     </div> -->
+                                    <!--  -->
+
+                                     <br>   
+                                <div class="container-fluid posts-space " style="padding-left: 5px;padding-right: 5px;">
+                                    <!-- Blogs area -->
+                                    
+                                   {% block blogs %}{% endblock blogs %}
+                                   
+                                   {% if nodata %}
+                                   <img class="img-fluid" src="{% static 'images/nodata.png' %}" alt="no data emage" />
+                                   {% endif %} 
+                                   <!-- end blogs area -->
+
+
+                                   {% if not nodata %}
+                                    <div class="container-fluid" style="margin-top:100px;">
+                                   <!-- Next previous btns -->
+                                    {% if friendpost %}
+                                    {% if posts.has_next %}
+                                        <a class="btn btn-danger text-start"  href="/page-{{posts.next_page_number }}/friendPost-{{profile.email}}/{{filterapplied}}">next</a>
+                                    {% endif %}
+                                    {% if posts.has_previous %}
+                                        <a class="btn btn-danger text-end" href="/page-{{ posts.previous_page_number }}/friendPost-{{profile.email}}/{{filterapplied}}">Previous</a>
+                                        {% endif %}
+                                        
+                                    {% endif %}
+
+                                    {% if not friendpost %}
+                                   {% if posts.has_next %}
+                                        <a class="btn btn-danger text-start rightbtn" href="/page-{{ posts.next_page_number }}/{{filterapplied}}">next</a>
+                                    {% endif %}
+                                    {% if posts.has_previous %}
+                                        <a class="btn btn-danger text-end leftbtn"  href="/page-{{ posts.previous_page_number }}/{{filterapplied}}">Previous</a>
+                                        {% endif %}
+                                        
+                                    {% endif%}
+                                    <!-- End next previous btns -->
+                                    </div>
+                                    {% endif %}
+                                </div>
+                               
+                            </div>
+                            
+                    </div>
+                </div>
+           
+        <footer class="container-fluid mt-4" style="background-color: #f69082;margin-bottom: 0px;color: white;">
+            <h2 class="text-center ">Learn at Home</h2>
+            <h5 class="text-center">&copy;copyright 2022</h5>
+            <p class="text-center mb-0"> By:Bupinder , Employee Code: APS-31152 </p>
+        </footer>
+
+</div>
+<!-- JavaScript Bundle with Popper -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script >
+    var profile_secton=0;
+    console.log("js uploaded")
+    function expandClassDiv(){
+        var divblock = document.getElementById("add-class-div")
+        var addbtn = document.getElementById("addbtn")
+        console.log(divblock.style.height)
+        if(divblock.style.height=="0px"){
+            // expanding
+            divblock.style.height ='300px';
+            addbtn.innerHTML ="X"
+        }
+        else if(divblock.style.height=="300px"){
+            // clossing
+            divblock.style.height ="0px";
+            addbtn.innerHTML ="Add Class"
+        }
+        else{
+             // expanding
+             divblock.style.height ='300px';
+             addbtn.innerHTML ="X"
+        }
+    }
+    function expandLecturesDiv(){
+        var divblock = document.getElementById("add-lectures-div")
+        var addbtn = document.getElementById("addbtn")
+        console.log(divblock.style.height)
+        if(divblock.style.height=="0px"){
+            // expanding
+            divblock.style.height ='300px';
+            addbtn.innerHTML ="X"
+        }
+        else if(divblock.style.height=="300px"){
+            // clossing
+            divblock.style.height ="0px";
+            addbtn.innerHTML ="Add Lectures"
+        }
+        else{
+             // expanding
+             divblock.style.height ='300px';
+             addbtn.innerHTML ="X"
+        }
+    }
+    function expandfrineddiv(){
+        var divblock = document.getElementById("friend-list-div-outer")
+        var addbtn = document.getElementById("friend-list-div-btn")
+        console.log(divblock.style.maxHeight)
+        if(divblock.style.maxHeight=="600px"){
+            // expanding
+            divblock.style.maxHeight ='none';
+            addbtn.innerHTML ="Show Less"
+        }
+        else if(divblock.style.maxHeight=="none"){
+            // clossing
+            divblock.style.maxHeight ="600px";
+            addbtn.innerHTML ="Show More Friends"
+        }
+        else{
+             // expanding
+             divblock.style.maxHeight = "none"
+             addbtn.innerHTML ="Show Less"
+
+        }
+    }
+    function expandSubjectDiv(){
+        var divblock = document.getElementById("add-subject-div")
+        var addbtn = document.getElementById("addbtn")
+        console.log(divblock.style.height)
+        if(divblock.style.height=="0px"){
+            // expanding
+            divblock.style.height ='300px';
+            addbtn.innerHTML ="X"
+        }
+        else if(divblock.style.height=="300px"){
+            // clossing
+            divblock.style.height ="0px";
+            addbtn.innerHTML ="Add"
+        }
+        else{
+             // expanding
+             divblock.style.height ='300px';
+             addbtn.innerHTML ="X"
+        }
+    }
+    function clopaseItem(id){
+        console.log(id)
+        var itemblock = document.getElementById(id);
+        console.log(itemblock.style.height)
+        if(itemblock.style.height=="55px"){
+            // expanding
+            itemblock.style.height ='auto';
+        }
+        else{
+            // clossing
+            itemblock.style.height ="55px";
+        }
+
+    }
+    function navbarsection(){
+        console.log("----");
+        var navbarsection = document.getElementById('profilesectionId')
+        if(profile_secton==0){
+            console.log("navbar opening");
+            navbarsection.style.display = "block";
+            profile_secton=1;
+        }
+        else{
+            console.log("navbar closing");
+            navbarsection.style.display = "none";
+            profile_secton = 0;
+        }
+
+    }
+    function expandItemDiv(){
+        var divblock = document.getElementById("add-item-div")
+        var addbtn = document.getElementById("addbtn")
+        console.log(divblock.style.height)
+        if(divblock.style.height=="0px"){
+            // expanding
+            divblock.style.height ='auto';
+            addbtn.innerHTML ="X"
+        }
+        else if(divblock.style.height=="auto"){
+            // clossing
+            divblock.style.height ="0px";
+            addbtn.innerHTML ="Add Item"
+        }
+        else{
+             // expanding
+             divblock.style.height ='auto';
+             addbtn.innerHTML ="X"
+        }
+
+    }
+    function expandSellerDiv(){
+        var divblock = document.getElementById("seller-div")
+        var arrow =document.getElementById("arrowbtn")
+        console.log(divblock.style.height)
+        if(divblock.style.height=="45px"){
+            // expanding
+            divblock.style.height ='auto';
+            arrow.style.transform = "rotate(180deg)";
+            
+        }
+        else if(divblock.style.height=="auto"){
+            // clossing
+            divblock.style.height ="45px";
+            arrow.style.transform = "rotate(0deg)";
+            
+        }
+        else{
+             // expanding
+             divblock.style.height ='45px';
+             arrow.style.transform = "rotate(0deg)";
+             
+        }
+
+    }
+
+    let base64String = "";
+    function imageLoader(){
+
+        var file = document.getElementById('subject_banner_img')['files'][0];
+        var reader = new FileReader();
+        reader.onload = function (){
+            base64String = reader.result.replace(/^,+,/,"")
+            imageBase64String = base64String
+            console.log(imageBase64String);
+            document.getElementById('subject_hidden_img').value=imageBase64String
+            console.log(document.getElementById('subject_hidden_img').value);
+        }
+        reader.readAsDataURL(file)
+    }
+    
+    
+</script>
+{% block scripts %}
+{% endblock scripts%}
+</body>
+
+</html>

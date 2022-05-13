@@ -1,0 +1,63 @@
+<!-- change not in superuser if command -->
+{% extends 'base.html' %} {% block blogs %}
+<div class="container">
+  {% if not superUser %}
+  <div class="text-end">
+    <h1 id="addbtn" class="add-btn" onclick="expandLecturesDiv()">Add</h1>
+  </div>
+
+  {% endif%}
+</div>
+<div class="mt-2" style="background-color: bisque; border-radius: 10px">
+  <br />
+  <h1 class="text-center text-danger">
+    <b><i> Lessons </i></b>
+  </h1>
+  {% if not superUser %}
+  <div id="add-lectures-div" class="container-fluid subjectDiv">
+    <form action="" method="POST">
+      {%csrf_token%}
+      <div class="form-group">
+        <div class="form-label">Lecture Title</div>
+        {{form.lecturesName}}
+      </div>
+      <div class="form-group">
+        <div class="form-label">Lecture Url</div>
+        {{form.lectureUrl}}
+      </div>
+      <div class="container mt-5 text-center">
+        <button type="submit" class="btn btn-danger">Add Lecture</button>
+      </div>
+    </form>
+  </div>
+  {% endif %} {% if not nodata %}
+  <div class="container">
+    {% for title,urls in videos_data.items %}
+    <a style="cursor: pointer; text-decoration: none" href="#">
+      <div class="card" style="width: 100%; margin: 3px; display: inline-block">
+        <div style="width: auto" class="classboxes">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY"
+          >
+          </iframe>
+        </div>
+        <div class="card-body">
+          <p class="card-text text-center" style="font-size: 1.2rem">
+            <b>{{title}}</b>
+          </p>
+        </div>
+      </div>
+    </a>
+    <br />
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="container text-center">
+    <h1>No Data Found!</h1>
+    <div class="text-disabled">Please try after sometime.</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock blogs%}

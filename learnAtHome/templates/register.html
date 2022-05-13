@@ -1,0 +1,14 @@
+{% extends 'login_base.html' %}
+{% block heading %}
+Register
+{% endblock heading %}
+{% block formdetails %}
+<form action="." method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <br>
+    <button type="submit" id="sub_btn">Submit</button>
+</form>
+
+
+{% endblock formdetails %}

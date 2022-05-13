@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block blogs %}
+<!-- 489871 -->
+<h1>Please do not refresh this page...</h1>
+
+<form
+  method="post"
+  action="https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid={{data.mid}}&orderId={{data.orderId}}"
+  name="paytm"
+>
+  <table>
+    <tbody>
+      <input type="hidden" name="mid" value="{{data.mid}}" />
+      <input type="hidden" name="orderId" value="{{data.orderId}}" />
+      <input type="hidden" name="txnToken" value="{{data.txnToken}}" />
+    </tbody>
+  </table>
+</form>
+<script type="text/javascript">
+  document.paytm.submit();
+</script>
+{% endblock blogs %}

@@ -1,0 +1,86 @@
+{% if not friendpost %} {% if post.liked %}
+<div class="like">
+  <a
+    style="text-decoration: none; color: red; font-weight: bolder"
+    href="{% url 'postlikeview' pageno post.post_id likeredirect %}"
+    ><span
+      ><img
+        height="25"
+        style="margin-right: 4px; float: left"
+        src="{% static 'images/like.png' %}"
+    /></span>
+    <h5
+      style="
+        color: red;
+        font-weight: bolder;
+        display: inline-blocks;
+        float: left;
+      "
+    >
+      Liked
+    </h5></a
+  >
+</div>
+{% endif %} {% if not post.liked %}
+<div class="like">
+  <a
+    style="text-decoration: none; color: red"
+    href="{% url 'postlikeview' pageno post.post_id likeredirect %}"
+    ><span
+      ><img
+        height="25"
+        style="margin-right: 4px"
+        src="{% static 'images/like.png' %}" /></span
+    >Like
+  </a>
+</div>
+{% endif %} {% if post.isMyPost %}
+<div class="followed">
+  <div class="dropdown">
+    <button
+      class="btn"
+      type="button"
+      id="dropdownMenuButton1"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      ...
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a class="dropdown-item" href="#">Edit</a></li>
+      <li><a class="dropdown-item" hre="#">Delete</a></li>
+    </ul>
+  </div>
+</div>
+{% endif %} {% if post.following %} {% if not post.isMyPost %}
+<div class="followed">
+  <span>
+    <img
+      height="25"
+      style="margin-right: 4px"
+      src="{% static 'images/followers.png'%}"
+    />
+  </span>
+  <a
+    style="text-decoration: none; color: grey"
+    href="{% url 'followedURL' pageno post.author likeredirect %}"
+    >Follwed</a
+  >
+</div>
+
+{% endif %} {% endif %} {% if not post.following %} {% if not post.isMyPost %}
+<div class="follow text-end" style="width: 50%; float: right">
+  <span>
+    <img
+      height="25"
+      style="margin-right: 4px"
+      src="{% static 'images/followers.png'%}"
+    />
+  </span>
+  <a
+    style="color: red; text-decoration: none"
+    href="{% url 'followedURL' pageno post.author likeredirect %}"
+    >Follow</a
+  >
+</div>
+{% endif %} {% endif %} {% endif %}

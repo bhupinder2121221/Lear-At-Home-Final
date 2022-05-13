@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block blogs %}
+<div class="container">
+    <div class="container">
+        <h1 class="text-center">New Post</h1>
+    </div>
+    <hr>
+    <form action="http://127.0.0.1:8000/api/user/" target="/makepost" method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <input type="hidden" name="author" value ="{{author}}">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">{{error}}</div>
+                <div class="row">
+                    <div class="col-4">
+                        <label class="form-label">Title Of Blog</label>
+                    </div>
+                    <div class="col-8">
+                        <div class="">{{form.title}}</div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-4">
+                        <label clas="form-label">Content</label>
+                    </div>
+                    <div class="col-8">
+                        <div class="">{{form.content}}</div>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-4">
+                        <label class="form-label">Image For Blog</label>
+                    </div>
+                    <div class="col-8">
+                        <div class="">{{form.image}}</div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" onclick="()=>{alert('Submited')}" class="btn btn-danger">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </form>
+</div>
+
+{% endblock blogs %}

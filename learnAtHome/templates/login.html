@@ -1,0 +1,34 @@
+{% extends 'login_base.html' %}
+{% block heading %}
+Login
+{% endblock heading %}
+{% block formdetails %}
+ <!-- <form class="form-control p-3" style="border:none;">
+                           <div class="mb-3">
+                            <label class="control-label">User Email</label>
+                            <input type="text" class="form-control">
+                           <div class="form-text">Example : abc@gmail.com</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="control-label"> Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="container text-center">
+                            <button type="submit" class="btn btn-danger loginBtn">Login In</button>
+                            </div>
+                        </form> -->
+
+<form action="." method="POST" novalidate> {% csrf_token %}
+    <!-- <label for="useremail">Email</label>
+    <input type="email" id="useremail" name="useremail">
+    <label for="userpassword">Password</label>
+    <input type="password" id="userpassword"> -->
+
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">Log In</button>
+</form>
+
+
+
+{% endblock formdetails %}

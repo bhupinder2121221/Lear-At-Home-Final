@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block blogs %}
+<div class="container-fluid">
+  <div class="container text-center friend-list-heading">My Friends</div>
+  <div class="container mt-5">
+    <!-- friend list -->
+
+    <div
+      id="friend-list-div-outer"
+      class="container-fluid followers-space friend-list-div"
+    >
+      {% if friendlist %}
+      <ul class="list-group list-group-flush">
+        {% for friendEmail,friendName in friendlist.items %}
+        <li class="list-group-item">
+          <a
+            style="
+              text-decoration: none;
+              color: red;
+              text-transform: capitalize;
+            "
+            href="/page-1/friendPost-{{friendEmail}}/"
+          >
+            {{friendName}}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+      <button
+        id="friend-list-div-btn"
+        onclick="expandfrineddiv()"
+        class="btn btn-danger"
+        style="width: 100%"
+      >
+        Show all friends
+      </button>
+
+      {% endif %} {% if not friendlist %}
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">No Freind</li>
+      </ul>
+      {% endif %}
+    </div>
+
+    <!-- end friend list -->
+  </div>
+</div>
+{% endblock blogs%}

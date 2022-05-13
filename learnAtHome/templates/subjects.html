@@ -1,0 +1,66 @@
+<!-- remove not in if statement fo superuser -->
+
+{% extends 'base.html' %} {% block blogs %}
+<div class="mt-2" style="background-color: bisque; border-radius: 10px">
+  <br />
+  <div class="container">
+    <h1 class="text-center text-danger">
+      <b><i> Subjects </i></b>
+    </h1>
+    {% if not superUser %}
+    <div class="text-end">
+      <h1 id="addbtn" class="add-btn" onclick="expandSubjectDiv()">Add</h1>
+    </div>
+    {% endif %}
+  </div>
+  {% if not superuser %}
+  <div id="add-subject-div" class="container-fluid subjectDiv">
+    <form action="" method="POST">
+      {%csrf_token%}
+      <input id="subject_hidden_img" type="hidden" name="imagefile" />
+      <div class="form-group">
+        <div class="form-label">Subject Name</div>
+        {{form.subjectName}}
+      </div>
+      <div class="form-group">
+        <div class="form-label">Banner Image</div>
+        <input
+          onchange="imageLoader()"
+          id="subject_banner_img"
+          type="file"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="container mt-5 text-center">
+        <button type="submit" class="btn btn-danger">Add Subject</button>
+      </div>
+    </form>
+  </div>
+  {% endif %} {% for image,name in subjects.items %}
+  <a
+    style="cursor: pointer; text-decoration: none"
+    href="{% url 'video_lecturesPage' classno name %}"
+  >
+    <div
+      class="card"
+      style="width: 10.8rem; margin: 3px; display: inline-block"
+    >
+      <div class="classboxes">
+        <img
+          class="img-fluid"
+          style="max-width: 100%; height: 100%; object-fit: cover"
+          src="{{image}}"
+        />
+      </div>
+      <div class="card-body">
+        <p class="card-text text-center" style="font-size: 1.2rem">
+          <b>{{name}}</b>
+        </p>
+      </div>
+    </div>
+  </a>
+
+  {% endfor %}
+</div>
+{% endblock blogs %}

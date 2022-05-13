@@ -1,0 +1,230 @@
+{% extends 'base.html' %} {% block blogs %}
+<div class="container-xl p-0">
+  <form>
+    <input id="TotalProducts" type="hidden" value="{{product.noOfItems}}" />
+    <input id="productprice" type="hidden" value="{{product.price}}" />
+  </form>
+  <div class="card mycard mx-auto mt-5 p-0">
+    <div class="header">
+      <img class="placeorder-img" src="" alt="" srcset="" />
+    </div>
+    <main>
+      <h1 class="text-center">Your order Summary</h1>
+      <!-- product details -->
+      <div class="order mt-5">
+        <div class="row">
+          <div class="col-6 text-end my-3">
+            <img
+              class="img-fluid placeorder-img mx-2"
+              src="{{product.image}}"
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div class="col-6 my-3">
+            <h4 style="text-transform: uppercase">{{product.title}}</h4>
+          </div>
+          <div class="col-6 text-end my-3">
+            <div class="flex">
+              <button class="btn placeorder-btn" id="minus-btn">-</button>
+              <span id="qty">0</span>
+              <button class="btn placeorder-btn" id="plus-btn">+</button>
+            </div>
+          </div>
+          <div class="col-6 my-3">
+            <span>$</span>
+            <span id="tot-price">{{product.price}}</span>
+            <span>X</span>
+            <span id="price-qty">0</span>
+          </div>
+        </div>
+      </div>
+      <!-- seller info -->
+      <div
+        id="seller-div"
+        class="containar-fluid"
+        style=" overflow: hidden"
+      >
+        <div
+          class="container"
+          style="background: rgba(255, 0, 0, 0.09)"
+          onclick="expandSellerDiv()"
+        >
+          <div
+            class="container"
+            style="
+              display: inline-block;
+              width: 85%;
+              cursor: pointer;
+              height: 45px;
+
+              font-size: 1.2rem;
+              color: red;
+              padding-top: 7px;
+            "
+          >
+            Seller Information
+          </div>
+          <div
+            id="arrowbtn"
+            style="
+              display: inline-block;
+              width: 29px;
+              padding: 9px;
+              font-size: 1.4rem;
+              color: red;
+              font-weight: bold;
+              transform: rotateX(180deg);
+            "
+          >
+            ^
+          </div>
+        </div>
+        <div class="container">
+            <div class="row border-dark my-3">
+                <div class="col-4 text-end">Name</div>
+                <div class="col-8">{{sellerInfo.name}}</div>
+              </div>
+              <div class="row border-dark my-3">
+                <div class="col-4 text-end">Address</div>
+                <div class="col-8">{{sellerInfo.address}}</div>
+              </div>
+              <div class="row border-dark my-3">
+                <div class="col-4 text-end">Shop Name</div>
+                <div class="col-8">{{sellerInfo.shopname}}</div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <!-- delivery -->
+      <div class="mt-5">
+        <h4 class="mx-3">Delivery Address</h4>
+        <div class="row">
+          <div class="col-3">
+            <div class="map-icon fs-1 text-center">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+          </div>
+          <div class="col-9">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
+              dolores vitae possimus officia voluptatum, reiciendis temporibus
+              placeat. Expedita nemo provident quae sunt libero hic, veritatis
+              vitae eaque saepe dolorum! Commodi?
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- price -->
+      <div class="my-5">
+        <!-- subtotal -->
+        <div class="row mt-2">
+          <div class="col" style="margin-left: 13px">SubTotal</div>
+          <div class="col"></div>
+          <div class="col text-end" style="margin-right: 10px">
+            <span>$</span>
+            <span id="subtotal">0</span>
+          </div>
+        </div>
+        <!-- shipping -->
+        <div class="row mt-2">
+          <div class="col" style="margin-left: 13px">Shipping Charges</div>
+          <div class="col"></div>
+          <div class="col text-end" style="margin-right: 10px">
+            <span>$</span>
+            <span id="shipping">0</span>
+          </div>
+        </div>
+        <!-- taxes -->
+        <div class="row mt-2">
+          <div class="col" style="margin-left: 13px">Taxes</div>
+          <div class="col"></div>
+          <div class="col text-end" style="margin-right: 10px">
+            <span>$</span>
+            <span id="taxes">0</span>
+          </div>
+        </div>
+        <!-- total -->
+        <div class="row mt-4">
+          <div class="col" style="margin-left: 13px">Total</div>
+          <div class="col"></div>
+          <div class="col text-end" style="margin-right: 10px">
+            <span>$</span>
+            <span id="total">0</span>
+          </div>
+        </div>
+
+      </div>
+      <form method="POST">
+        {%csrf_token%}
+        <input type="hidden" name="totalpriceHidden" id="totalpriceHiddenField" value="">
+      <button type="submit"  class="btn btn-danger" style="width: 100%;
+      font-size: 1.3rem;
+      font-weight: bolder;
+      margin-bottom: 25px;">Place Order</button>
+      </form>
+    </main>
+  </div>
+</div>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+{% endblock blogs %}
+{% block scripts %}
+<script>
+  let productPrice = document.getElementById("productprice").value;
+
+  $("#plus-btn").click(function (e) {
+    e.preventDefault();
+    $("#minus-btn").removeClass("disabled");
+
+    let qty = +$("#qty").text();
+    let newQty = qty + 1;
+    const { subtotal, shipping, taxes, total } = priceCal(newQty, productPrice);
+
+    $("#qty").text(newQty);
+    $("#price-qty").text(newQty);
+    $("#tot-price").text(productPrice);
+    $("#subtotal").text(subtotal);
+    $("#shipping").text(shipping);
+    $("#taxes").text(taxes);
+    $("#total").text(total);
+  });
+  $("#minus-btn").click(function (e) {
+    e.preventDefault();
+    let qty = +$("#qty").text();
+
+    if (qty == 0) {
+      $("#minus-btn").addClass("disabled");
+    } else {
+      let newQty = qty - 1;
+      const { subtotal, shipping, taxes, total } = priceCal(
+        newQty,
+        productPrice
+      );
+
+      $("#qty").text(newQty);
+      $("#price-qty").text(newQty);
+      $("#tot-price").text(productPrice);
+      $("#subtotal").text(subtotal);
+      $("#shipping").text(shipping);
+      $("#taxes").text(taxes);
+      $("#total").text(total);
+    }
+  });
+
+  function priceCal(qty, productPrice) {
+    let subtotal = qty * productPrice;
+    let shipping = qty * 30;
+    let taxes = +parseFloat((subtotal + shipping) * 0.18).toFixed(2);
+    let total = subtotal + shipping + taxes;
+    document.getElementById("totalpriceHiddenField").value = total;
+    return { subtotal, shipping, taxes, total };
+  }
+ 
+</script>
+{% endblock scripts%}
