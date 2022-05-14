@@ -150,18 +150,21 @@ def user_homePage(request, pageno, filter=None):
         posts = posts.json()[-1::-1]
 
     pages = Paginator(posts, 4)
+    print(pages.num_pages)
+    print(pages.count)
+    print(pages.page_range)
     # print(posts.json())
     # print(friendlist_response.json().values())
     request.session['profileData'] = profile_response.json()
     request.session['additionalData'] = aditional_data
 
-    nodata = False
+    nodata = True
     if pageno > pages.num_pages:
         pageno = pages.num_pages
         nodata = True
     print(pageno, "page-------------------")
     certain_page = pages.page(pageno)
-
+    context = {'nodata': True}
     for page in certain_page:
         pl = Post.objects.get(post_id=page['post_id']).postlike.likedBy.all()
         fl = FolowersModel.objects.get(
@@ -195,25 +198,24 @@ def user_homePage(request, pageno, filter=None):
             page['liked'] = False
         # print(pl)
         # print(pl.filter(email=request.user.email))
-        print(request.path)
-        redirecturlpath = "http://127.0.0.1:8000"+request.path
 
-        context = {
-            'posts': certain_page,
-            'pageno': pageno,
-            'profile': profile_response.json(),
-            'otherdata': aditional_data,
-            'user': True,
-            # 'friendlist': friendlist_response.json(),
-            'filterpath': urlpath,
-            'filtertag': filtertag,
-            'filterapplied': filterapplied,
-            'likeredirect': redirecturlpath.replace('/', "&"),
-            'nodata': nodata,
-            'myfeeds': True,
-            'myfeeds': True
-        }
-        print(context)
+    redirecturlpath = "http://127.0.0.1:8000"+request.path
+
+    context = {
+        'posts': certain_page,
+        'pageno': pageno,
+        'profile': profile_response.json(),
+        'otherdata': aditional_data,
+        'user': True,
+        # 'friendlist': friendlist_response.json(),
+        'filterpath': urlpath,
+        'filtertag': filtertag,
+        'filterapplied': filterapplied,
+        'likeredirect': redirecturlpath.replace('/', "&"),
+        'nodata': nodata,
+        'myfeeds': True
+    }
+    print(context)
     return render(request, 'home.html', context)
 
 
@@ -472,18 +474,15 @@ def register_page(request):
         myform = RegisterForm(request.POST, request.FILES)
         # print(myform.error_messages)
         if myform.is_valid():
-            pic = request.FILES['profile']
-            print("uploaded file is : ", pic.name)
 
-            pic.name = myform.cleaned_data['email']
             # filedestination = handleProfileImage(pic,myform.cleaned_data.get('email'))
             CustomUser.objects.create_user(
-                fname=myform.cleaned_data['fname'],
-                lname=myform.cleaned_data['lname'],
-                email=myform.cleaned_data['email'],
-                dob=myform.cleaned_data['dob'],
+                fname=myform.cleaned_data['fname'].lower(),
+                lname=myform.cleaned_data['lname'].lower(),
+                email=myform.cleaned_data['email'].lower(),
+                permanent_address=myform.cleaned_data['address'],
                 password=myform.cleaned_data['password'],
-                profile=myform.cleaned_data['profile'],
+                profile=request.POST.get('subject_hidden_img'),
                 is_staff=False,
                 is_superuser=False
             )
@@ -501,6 +500,11 @@ def register_page(request):
         context = {
             'form': myform
         }
+        for field in myform.errors.as_data():
+            # print(field)
+            messages.add_message(
+                request, messages.INFO, "Check " + str(field) + " field")
+
         return render(request, 'register.html', context)
 # --------------------------------------------------------------------------
 
@@ -563,7 +567,7 @@ class Login_Page(View):
                 return render(request, 'login.html', context)
 
         else:
-            print(myform.errors.as_data())
+            # print(myform.errors.as_data())
             for field in myform.errors.as_data():
                 # print(field)
                 messages.add_message(

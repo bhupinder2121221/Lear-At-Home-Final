@@ -44,25 +44,29 @@
         <circle fill="#F6DCD3" cx="0" cy="0" r="100" />
       </g>
     </svg>
-    <div class="row">
-      <div class="col-12">
-        <div class="container">
-          <div class="row form-banner-space">
-            <div class="col-12 text-start">
-              <h1 class="mainHeading">Learn At Home</h1>
-            </div>
-            <br />
-            <br />
-            <div class="container back row">
-              <div class="col-12" style="padding-right: 0px">
-                <div class="container form-space">
-                  <h1 class="text-center">
-                    {% block heading %}{% endblock heading %}
-                  </h1>
+    <div class="container-fluid">
+      <div class="container" style="padding-left: 0px; padding-right: 0px">
+        <h1 class="mainHeading">Learn At Home</h1>
 
-                  {% block formdetails %} {% endblock formdetails %}
-                </div>
-              </div>
+        <br />
+        <br />
+        <div
+          class="container back row"
+          style="
+            padding-left: 0px;
+            width: 100%;
+            padding-right: 0px;
+            margin: auto;
+          "
+        >
+          <div class="col-12" style="padding-right: 0px">
+            <div class="container form-space">
+              <h1 class="text-center">
+                <div class="text-danger mb-5">Registration Form</div>
+                {% block heading %}{% endblock heading %}
+              </h1>
+
+              {% block formdetails %} {% endblock formdetails %}
             </div>
           </div>
         </div>
@@ -75,5 +79,21 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script>
+      let base64String = "";
+      function imageLoader() {
+        var file = document.getElementById("subject_banner_img")["files"][0];
+        var reader = new FileReader();
+        reader.onload = function () {
+          base64String = reader.result.replace(/^,+,/, "");
+          imageBase64String = base64String;
+          console.log(imageBase64String);
+          document.getElementById("subject_hidden_img").value =
+            imageBase64String;
+          console.log(document.getElementById("subject_hidden_img").value);
+        };
+        reader.readAsDataURL(file);
+      }
+    </script>
   </body>
 </html>

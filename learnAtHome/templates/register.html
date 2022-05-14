@@ -1,5 +1,4 @@
-{% extends 'login_base.html' %} {% block heading %} Register {% endblock heading
-%} {% block formdetails %}
+{% extends 'login_base.html' %} {% block formdetails %}
 <form action="." method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-group">
@@ -7,8 +6,42 @@
     {{form.fname}}
   </div>
   <div class="form-group">
+    <div class="form-label fs-5 text">Last Name</div>
+    {{form.lname}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Email</div>
+    {{form.email}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Address</div>
+    {{form.address}}
+  </div>
+  <div class="form-group">
     <div class="form-label fs-5 text">Password</div>
     {{form.password}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Re Password</div>
+    {{form.re_password}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Profile Picture</div>
+    <input id="subject_hidden_img" name="subject_hidden_img" type="hidden" />
+    <input
+      id="subject_banner_img"
+      onchange="imageLoader()"
+      type="file"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group mt-5">
+    <div class="row">
+      <div class="col-8 text-end">
+        <div class="form-label fs-5 text">Terms & Conditions.</div>
+      </div>
+      <div class="col-3 text-start">{{form.terms}}</div>
+    </div>
   </div>
   <div class="form-group">
     {% if messages %} {% for message in messages %}
@@ -16,15 +49,14 @@
     {% endfor %} {% endif %}
   </div>
   <div class="text-center mt-3">
-    <button class="btn btn-danger" type="submit">Log In</button>
+    <button class="btn btn-danger" type="submit">Register</button>
   </div>
   <div class="container-fluid mt-3" style="color: darkgray">
-    Have no account?
-    <a href="{% url 'registerUrl'%}" style="text-decoration: none; color: red"
-      >Register Here
+    Have account?
+    <a href="{% url 'loginUrl'%}" style="text-decoration: none; color: red"
+      >Login Here
     </a>
   </div>
-  <button type="submit" id="sub_btn">Submit</button>
 </form>
 
 {% endblock formdetails %}

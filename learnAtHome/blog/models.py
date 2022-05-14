@@ -29,14 +29,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     fname = models.CharField('FirstName', max_length=15, blank=False)
     lname = models.CharField('LastName', max_length=15, blank=True)
     email = models.CharField('Email', max_length=30, primary_key=True)
-    dob = models.DateField('DOB', blank=True, null=True)
     is_staff = models.BooleanField('IsStaff', default=False)
     is_superuser = models.BooleanField('IsSuperUser', default=False)
-    password = models.CharField('Password', max_length=16, blank=False)
-    profile = models.ImageField(
-        'ProfileImage', blank=False, upload_to="profile/")
-
+    password = models.TextField('Password', blank=False)
+    profile = models.TextField(
+        'ProfileImage', default="No image")
+    permanent_address = models.TextField('address', default="no address")
     objects = CustomUserManager()
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['fname']
 

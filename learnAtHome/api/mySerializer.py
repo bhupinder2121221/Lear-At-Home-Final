@@ -47,7 +47,7 @@ class UserSearilizer(serializers.ModelSerializer):
             'fname',
             'lname',
             'email',
-            'dob',
+            'permanent_address',
             'is_staff',
             'is_superuser',
             'profile',

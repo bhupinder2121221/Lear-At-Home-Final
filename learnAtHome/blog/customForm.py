@@ -88,19 +88,19 @@ class PostForm(forms.ModelForm):
 
 
 class RegisterForm(forms.Form):
-    fname = nameFieled(label='First Name', required=True, min_length=1, max_length=15, error_messages={
+    fname = nameFieled(label='First Name', widget=forms.TextInput(attrs={'class': 'form-control'}), required=True, min_length=1, max_length=15, error_messages={
                        'required': 'Please provide First Name', 'max_length': 'Cannot exeads 15 characters', 'min_length': 'Must be alteast 1 characters'})
-    lname = nameFieled(label='Last Name', required=True, min_length=1, max_length=15, error_messages={
+    lname = nameFieled(label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control'}), required=True, min_length=1, max_length=15, error_messages={
                        'required': 'Please provide First Name', 'max_length': 'Cannot exeads 15 characters', 'min_length': 'Must be alteast 1 characters'})
-    email = forms.EmailField(label='Email', required=True, min_length=10, max_length=30, error_messages={
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}), required=True, min_length=10, max_length=30, error_messages={
                              'required': 'Email is required', 'min_length': 'Atleast 10 charcters', 'max_length': 'Maximum 30 charcters allowed'})
-    dob = forms.DateField(label='D.O.B', widget=forms.SelectDateWidget, required=True, error_messages={
-                          'required': 'DOB is required', 'invalid': 'Your DOB is not valid'})
-    password = forms.CharField(label='Password', widget=forms.PasswordInput, required=True, max_length=16, min_length=8, error_messages={
+    address = nameFieled(label='Address', widget=forms.TextInput(attrs={'class': 'form-control'}), required=True, min_length=4, max_length=115, error_messages={
+        'required': 'Please provide First Name', 'max_length': 'Cannot exeads 15 characters', 'min_length': 'Must be alteast 1 characters'})
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}), required=True, max_length=16, min_length=8, error_messages={
                                'requied': 'Password is required', 'min_length': 'Atleast8 characters', 'max_length': 'Atmost 16 charcters'})
-    re_password = forms.CharField(label='Rewrite Password', widget=forms.PasswordInput, required=True, max_length=16, min_length=8, error_messages={
+    re_password = forms.CharField(label='Rewrite Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}), required=True, max_length=16, min_length=8, error_messages={
                                   'requied': 'Password is required', 'min_length': 'Atleast8 characters', 'max_length': 'Atmost 16 charcters'})
-    profile = forms.ImageField(label='Profile Pic', widget=forms.FileInput)
+
     terms = forms.BooleanField(label='T&Cs', widget=forms.CheckboxInput,
                                required=True, error_messages={'required': 'Accept our T&Cs'})
 
