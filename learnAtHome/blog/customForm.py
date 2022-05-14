@@ -71,7 +71,7 @@ class nameFieled(forms.CharField):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'image']
+        fields = ['title', 'content']
 
         def clean_title(self):
             if len(title) > 255:
@@ -80,12 +80,6 @@ class PostForm(forms.ModelForm):
         def clean_content(self):
             if len(content) > 10000:
                 raise ValidationError("Content cannot exceds 10000 characters")
-
-        def clean_image(self):
-            img = self.cleaned_data.get('image', None)
-            if img is None:
-                print("Blog image not recieved")
-                raise ValidationError('Image is Required.')
 
     def fill_rest_fileds(self, user_given, pl, dt):
         self.author = user_given

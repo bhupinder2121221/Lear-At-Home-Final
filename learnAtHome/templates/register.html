@@ -1,14 +1,30 @@
-{% extends 'login_base.html' %}
-{% block heading %}
-Register
-{% endblock heading %}
-{% block formdetails %}
+{% extends 'login_base.html' %} {% block heading %} Register {% endblock heading
+%} {% block formdetails %}
 <form action="." method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form}}
-    <br>
-    <button type="submit" id="sub_btn">Submit</button>
+  {% csrf_token %}
+  <div class="form-group">
+    <div class="form-label fs-5 text">First Name</div>
+    {{form.fname}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Password</div>
+    {{form.password}}
+  </div>
+  <div class="form-group">
+    {% if messages %} {% for message in messages %}
+    <li>{% if message.tags %} {{ message }} {% endif %}</li>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-danger" type="submit">Log In</button>
+  </div>
+  <div class="container-fluid mt-3" style="color: darkgray">
+    Have no account?
+    <a href="{% url 'registerUrl'%}" style="text-decoration: none; color: red"
+      >Register Here
+    </a>
+  </div>
+  <button type="submit" id="sub_btn">Submit</button>
 </form>
-
 
 {% endblock formdetails %}

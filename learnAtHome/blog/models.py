@@ -56,7 +56,7 @@ class Post(models.Model):
     content = models.TextField('Content')
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     dateTime = models.DateTimeField('DateTime', auto_now_add=True)
-    image = models.ImageField('BlogImage', upload_to=f'bolgImages/')
+    image = models.TextField('BlogImage', default='no image')
     postlike = models.OneToOneField(
         PostLikes, on_delete=models.CASCADE, default=None)
 
@@ -71,8 +71,8 @@ class RegisterFormModel(models.Model):
     email = models.CharField('Email', max_length=30, primary_key=True)
     dob = models.DateField('DOB')
     password = models.CharField('Password', max_length=16, blank=False)
-    profile = models.ImageField(
-        'ProfileImage', blank=False, upload_to="profile/")
+    profile = models.TextField(
+        'ProfileImage', default="No image")
 
     def __str__(self):
         return self.email

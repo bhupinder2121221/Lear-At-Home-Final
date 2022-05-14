@@ -23,7 +23,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',  
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -69,9 +69,17 @@ WSGI_APPLICATION = 'learnAtHome.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'learn_at_home',
+        'USER': 'postgres',
+        'PASSWORD': '6551',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -114,7 +122,7 @@ print(BASE_DIR)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIR = [
-    os.path.join(BASE_DIR, 'static')   , 
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type
@@ -123,20 +131,19 @@ STATICFILES_DIR = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-#media file
+# media file
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-#custom User model
+# custom User model
 AUTH_USER_MODEL = 'blog.CustomUser'
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES" : [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         "api.mytoken.myTokenAuthentication"
     ],
-    "DEFAULT_PERMISSION_CLASSES" : [
+    "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ]
 }

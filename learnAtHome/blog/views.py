@@ -419,26 +419,26 @@ class New_PostPage(LoginRequiredMixin, View):
             datajson['content'] = myform.cleaned_data['content']
             datajson['author'] = request.user.email
             datajson['dateTime'] = datetime.now(timezone('Asia/Kolkata'))
-            datajson['image'] = myform.cleaned_data['image']
+            datajson['image'] = request.POST.get('subject_hidden_img')
 
-            resutlt = requests.post("http://localhost:8000/api/user/", headers={
-                                    'Authorization': "SecretToken "+str(request.session.get('token'))}, data=datajson)
-            print(resutlt.text)
+            # resutlt = requests.post("http://localhost:8000/api/user/", headers={
+            # 'Authorization': "SecretToken "+str(request.session.get('token'))}, data = datajson)
+            print(datajson)
 
-            if resutlt.json()['error'] == 'no error':
-                return HttpResponse("Post saved successfully")
-            else:
-                context = {
-                    'form': myform,
-                    'error': resutlt.error,
-                    "pageno": 1,
-                    'friendpost': True,
-                    # 'friendlist': request.session.get('friendListData'),
-                    'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers={'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={'username': request.user.email}).json(),
-                    'otherdata': getdetailOfProfile(request.user.email)
-                }
-                return render(request, 'newPost.html', context)
-            # return HttpResponse("Success")
+            # if resutlt.json()['error'] == 'no error':
+            #     return HttpResponse("Post saved successfully")
+            # else:
+            #     context={
+            #         'form': myform,
+            #         'error': resutlt.error,
+            #         "pageno": 1,
+            #         'friendpost': True,
+            #         # 'friendlist': request.session.get('friendListData'),
+            #         'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers = {'Authorization': 'SecretToken '+str(request.session.get('token'))}, data = {'username': request.user.email}).json(),
+            #         'otherdata': getdetailOfProfile(request.user.email)
+            #     }
+            #     return render(request, 'newPost.html', context)
+            return HttpResponse("Success")
         else:
             context = {
                 'form': myform,
