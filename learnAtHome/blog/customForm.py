@@ -5,9 +5,9 @@ from .models import Post
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='Email', min_length=10, max_length=30, error_messages={
+    email = forms.EmailField(label='Email', min_length=10, max_length=30, widget=forms.EmailInput(attrs={'class': 'form-control'}), error_messages={
                              'required': 'Email is required', 'max_length': 'Almost 30 charcaters allowed in email', 'min_length': 'Minimum 10 characters allowed'})
-    password = forms.CharField(max_length=16, min_length=8, label="Password", error_messages={
+    password = forms.CharField(max_length=16, min_length=8, label="Password", widget=forms.PasswordInput(attrs={'class': 'form-control'}), error_messages={
                                'requied': 'Password is required', 'max_length': 'Maximum 18 characters allowed', 'min_length': 'Minimum 8 characters allowed'})
 
 

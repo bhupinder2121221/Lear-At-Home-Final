@@ -5,6 +5,7 @@ from .models import StoreItems, OrderedItmes, Sellers
 from django.forms import EmailInput
 from paytmchecksum import PaytmChecksum
 import string
+from django.contrib import messages
 import numpy
 from django.views.decorators.csrf import csrf_exempt
 # ------------------------------------------------------
@@ -102,7 +103,7 @@ def check_set_testCookie(request):
         return True
     else:
         print("The browser is not compatible")
-        return False
+        return True
 # ------------------------ Home page ---------------------------------------
 
 
@@ -556,9 +557,18 @@ class Login_Page(View):
                 http.set_cookie("user_id", user.email, NoOfSeconds)
                 return http
             else:
-                return HttpResponse("Login Wrong credentials")
+                messages.add_message(
+                    request, messages.INFO, "Login Credentials are wrong.")
+
+                return render(request, 'login.html', context)
 
         else:
+            print(myform.errors.as_data())
+            for field in myform.errors.as_data():
+                # print(field)
+                messages.add_message(
+                    request, messages.INFO, "Check " + str(field) + " field")
+
             return render(request, 'login.html', context)
 
 

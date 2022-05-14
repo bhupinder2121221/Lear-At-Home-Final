@@ -1,9 +1,6 @@
-{% extends 'login_base.html' %}
-{% block heading %}
-Login
-{% endblock heading %}
+{% extends 'login_base.html' %} {% block heading %} Login {% endblock heading %}
 {% block formdetails %}
- <!-- <form class="form-control p-3" style="border:none;">
+<!-- <form class="form-control p-3" style="border:none;">
                            <div class="mb-3">
                             <label class="control-label">User Email</label>
                             <input type="text" class="form-control">
@@ -18,17 +15,36 @@ Login
                             </div>
                         </form> -->
 
-<form action="." method="POST" novalidate> {% csrf_token %}
-    <!-- <label for="useremail">Email</label>
+<form action="." method="POST" novalidate>
+  {% csrf_token %}
+  <!-- <label for="useremail">Email</label>
     <input type="email" id="useremail" name="useremail">
     <label for="userpassword">Password</label>
     <input type="password" id="userpassword"> -->
 
-    {% csrf_token %}
-    {{form}}
-    <button type="submit">Log In</button>
+  {% csrf_token %}
+  <div class="form-group">
+    <div class="form-label fs-5 text">Email</div>
+    {{form.email}}
+  </div>
+  <div class="form-group">
+    <div class="form-label fs-5 text">Password</div>
+    {{form.password}}
+  </div>
+  <div class="form-group">
+    {% if messages %} {% for message in messages %}
+    <li>{% if message.tags %} {{ message }} {% endif %}</li>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-danger" type="submit">Log In</button>
+  </div>
+  <div class="container-fluid mt-3" style="color: darkgray">
+    Have no account?
+    <a href="{% url 'registerUrl'%}" style="text-decoration: none; color: red"
+      >Register Here
+    </a>
+  </div>
 </form>
-
-
 
 {% endblock formdetails %}
