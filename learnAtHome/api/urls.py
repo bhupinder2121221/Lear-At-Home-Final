@@ -1,6 +1,6 @@
 
 from django.urls import path, re_path
-from .views import detailed_Post, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData
+from .views import detailed_Post, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData, GetOrders
 from rest_framework.authtoken.views import obtain_auth_token
 
 # jwt token authentication
@@ -22,6 +22,7 @@ urlpatterns = [
     path('getBooksDetals/', GetItems.as_view(), name="getBooksDetals"),
     path('getItemDetal/', GetItemDetail.as_view(), name="getItemDetalApi"),
     path('getSellerData/', GetSellerData.as_view(), name="getSellerDataAPI"),
+    path('getOrdersDetal/', GetOrders.as_view(), name='getOrdersdatil'),
     # -------------------------------------------------------
 
 

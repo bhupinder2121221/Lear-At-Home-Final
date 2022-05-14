@@ -1059,6 +1059,13 @@ class PaytmCallback(LoginRequiredMixin, View):
 # -----------------------------------------------------
 
 
+def getOrdersDetail(request):
+    endpoint = "http://127.0.0.1:8000/api/getOrdersDetal/"
+    response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
+        request.session.get('token'))}, data={"email": request.user.email})
+    return response.json()
+
+
 class OrderView(LoginRequiredMixin, View):
 
     login_url = "/login"
@@ -1066,8 +1073,17 @@ class OrderView(LoginRequiredMixin, View):
 
     def get(self, request):
         profile_response, aditional_data = get_Profiledata(request)
+        getOrdersDetail(request)
+        data = getOrdersDetail(request)
+        for item in data:
+            print(type(item))
+            item['items'] = getItemDetail(request, item['items'])
+            # item['items'] =
+
         context = {
             'profile': profile_response.json(),
             'otherdata': aditional_data,
+            'orders': data
         }
-        return render(request,'orders.html',context)
+        print("data : ", data)
+        return render(request, 'orders.html', context)

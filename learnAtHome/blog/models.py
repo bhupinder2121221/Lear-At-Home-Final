@@ -146,6 +146,7 @@ class OrderedItmes(models.Model):
     totalPrice = models.IntegerField()
     transectionId = models.TextField()
     buyer_email = models.CharField(max_length=50, default="Not Given")
+    address = models.TextField(default="No Address Given")
 
     def __str__(self) -> str:
         return self.items.title + str(" | ") + str(self.transectionId) + " | " + str(self.buyer_email)

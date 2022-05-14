@@ -1,6 +1,7 @@
 
+from dataclasses import field
 from rest_framework import serializers
-from blog.models import Post, CustomUser, Classes_and_subjects, StoreItems, Sellers
+from blog.models import Post, CustomUser, Classes_and_subjects, StoreItems, Sellers, OrderedItmes
 
 
 class ClassesandSubjects_Serializer(serializers.ModelSerializer):
@@ -14,6 +15,13 @@ class StoreItemsSerializer(serializers.ModelSerializer):
     """This serializer is for storing the buying items for store"""
     class Meta:
         model = StoreItems
+        fields = '__all__'
+
+
+class GetOredersSearialoizer(serializers.ModelSerializer):
+    """This will give detail of all orders"""
+    class Meta:
+        model = OrderedItmes
         fields = '__all__'
 
 

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from blog.models import CustomUser, Post, PostLikes, RegisterFormModel, FolowersModel, FollowdByModel, Classes_and_subjects, Sellers, viedo_lectures, subjects, StoreItems, OrderedItmes
-from api.mySerializer import PostSearlizers, UserSearilizer, ClassesandSubjects_Serializer, StoreItemsSerializer, SellerSerializer
+from api.mySerializer import PostSearlizers, UserSearilizer, ClassesandSubjects_Serializer, StoreItemsSerializer, SellerSerializer, GetOredersSearialoizer
 from rest_framework.views import APIView
 from django.shortcuts import redirect
 from rest_framework import generics, mixins, permissions, authentication
@@ -344,6 +344,15 @@ class GetItemDetail(APIView):
             return Response({'status': "Order Not Found"})
         data = StoreItemsSerializer(order[0], many=False).data
 
+        return Response(data)
+
+
+class GetOrders(APIView):
+    def post(self, request):
+        useremail = request.data['email']
+        o = OrderedItmes.objects.filter(buyer_email=useremail).all()
+        data = GetOredersSearialoizer(o, many=True).data
+        print(data)
         return Response(data)
 
 
