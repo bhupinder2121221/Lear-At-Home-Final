@@ -1,6 +1,7 @@
 # ^^^^^^^^^^^^^ Error in sending blog image in json file
 # paytm imports ------------------------------------
 from distutils.log import Log
+from email import message
 from .models import StoreItems, OrderedItmes, Sellers
 from django.forms import EmailInput
 from paytmchecksum import PaytmChecksum
@@ -371,10 +372,21 @@ class DeletePostView(LoginRequiredMixin, View):
     login_url = "/login/"
     redirect_field_name = "redirect_to"
 
-    def get(self, request, redirecturl):
-        delete_endpoint = "http://127.0.0.1:8000/api/deletepost"
-        delete_response = requests.delete(delete_endpoint, headers={'Autho'})
-        return redirect(redirecturl.replace("&", "/"))
+    def get(self, request, postid):
+        delete_endpoint = "http://127.0.0.1:8000/api/deletepost/"
+
+        response = requests.post(delete_endpoint, headers={
+            'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={"post_id": postid})
+        if response.json()['status'] == '500':
+            messages.add_message(
+                request, messages.INFO, 'Post not deleted.'
+            )
+        else:
+            messages.add_message(
+                request, messages.INFO, 'Post deleted Successfully.'
+            )
+            print("Post deleted")
+        return redirect('defaultHomeUrl')
 
 
 def homePage(request, pageno=1, filter=None):

@@ -127,11 +127,14 @@ class CreateUserSedicificPost(generics.CreateAPIView):
 
 
 class DeleteUserSpecificPost(APIView):
-    def delete(self, request):
+    def post(self, request):
         username = request.user.email
-        postid = request.data['post_id']
-        print(username, postid)
-        return Response({'status': 200})
+        postid = int(request.data['post_id'])
+        try:
+            Post.objects.get(post_id=postid).delete()
+        except:
+            return Response({'status': '500'})
+        return Response({'status': '200'})
 
 
 class UserSpecificPostDetailView(generics.RetrieveDestroyAPIView):

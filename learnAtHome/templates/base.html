@@ -32,7 +32,35 @@
     />
 </head>
 <body style="background-color: #f69082;margin: auto;">
-    <div class="container-fluid" style="max-width: 628px;">
+
+    <!-- confirmation div for deleting post -->
+
+    <div
+  id="confirmationdiv"
+  class="container p-4"
+  style="
+      top: 28%;
+    left: 2.5%;
+    display: none;
+    position: fixed;
+    z-index: 23;
+    width: 95%;
+    height: 232px;
+    background: white;
+    border: 2px red solid;
+    border-radius: 24px;
+  "
+>
+  <h1 class="text-center">Are you sure to delete post?</h1>
+  <div class="container mt-5 text-center">
+    <button onclick="redirectTo('http://127.0.0.1:8000/deletepost')" class="btn btn-danger mx-2" style="width: 100px">Delete</button>
+    <button onclick="cancelconfirmation()" class="btn btn-success mx-2" style="width: 100px">Cancel</button>
+  </div>
+</div>
+
+    <!-- ----------------------- -->
+
+    <div id="basediv" class="container-fluid" style="max-width: 628px;">
         <!-- profile section -->
         <div class="row">
             <div class="col-12">
@@ -243,6 +271,9 @@
 
                                      <br>   
                                 <div class="container-fluid posts-space " style="padding-left: 5px;padding-right: 5px;">
+                                    {% if messages %} {% for message in messages %}
+                                    <div class="alert alert-success m-3">{% if message.tags %} {{ message }} {% endif %}</div>
+                                    {% endfor %} {% endif %}
                                     <!-- Blogs area -->
                                     
                                    {% block blogs %}{% endblock blogs %}

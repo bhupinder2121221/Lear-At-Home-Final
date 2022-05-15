@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% block blogs %}
+
 <div class="container" style="padding: 0px">
   <div class="container text-center mt-3" style="padding: 0px">
     {% if nodata %}
@@ -85,8 +86,22 @@
                 ...
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Edit</a></li>
-                <li><a class="dropdown-item" hre="#">Delete</a></li>
+                <li>
+                  <div
+                    onclick="confirmaction('{{post.post_id}}')"
+                    class="dropdown-item"
+                  >
+                    Edit
+                  </div>
+                </li>
+                <li>
+                  <div
+                    onclick="confirmaction('{{post.post_id}}')"
+                    class="dropdown-item"
+                  >
+                    Delete
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -138,6 +153,28 @@
   </div>
   {% endif %}
 </div>
-{% endblock blogs %}
-
+{% endblock blogs %} {% block scripts %}
+<script>
+  var confirmationdiv = document.getElementById("confirmationdiv");
+  var basediv = document.getElementById("basediv");
+  var post_id = -1;
+  function confirmaction(postid) {
+    post_id = postid;
+    console.log("post id to delete is " + postid, post_id);
+    confirmationdiv.style.display = "block";
+    basediv.style.opacity = 0.2;
+  }
+  function cancelconfirmation() {
+    confirmationdiv.style.display = "none";
+    basediv.style.opacity = 1;
+  }
+  function redirectTo(url) {
+    if (parseInt(post_id) < 0) {
+      alert("Please try later.");
+    } else {
+      window.location.replace(url + "/" + post_id);
+    }
+  }
+</script>
+{% endblock scripts%}
 <!--  -->

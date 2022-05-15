@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from blog.views import Login_Page, homePage, register_page, logout_page, New_PostPage, postlikeView, followedView, friendPostView, ClassroomHome, BuyItem, subjectsView, LecturesView, FreindList, PlaceOrder, PaytmCallback, paymentCheckingView, OrderView
+from blog.views import Login_Page, homePage, DeletePostView, register_page, logout_page, New_PostPage, postlikeView, followedView, friendPostView, ClassroomHome, BuyItem, subjectsView, LecturesView, FreindList, PlaceOrder, PaytmCallback, paymentCheckingView, OrderView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -47,7 +47,8 @@ urlpatterns = [
     path('page-<int:pageno>/pagefollowed-<str:SecondEmail>/redirecturl-<str:redirecturl>',
          followedView, name="followedURL"),
     path('register/', register_page, name='registerUrl'),
-    # path('deletepost/redirecturl-<str:redirecturl>/',pass,name="deletePost"),
+    path('deletepost/<str:postid>/',
+         DeletePostView.as_view(), name="deletePost"),
     path('logout', logout_page, name='logoutUrl'),
     path('makepost', New_PostPage.as_view(), name="newPostUrl"),
 

@@ -39,7 +39,7 @@ urlpatterns = [
     # ------------------------------------------------------------
 
     #   posts ------------------------------------------------------
-    path('deletepost', DeleteUserSpecificPost.as_view(), name="deletePost"),
+    path('deletepost/', DeleteUserSpecificPost.as_view(), name="deletePost"),
     path('filterFollowers/', FollowersPostFilter.as_view(), name="filterfollowing"),
     path('createProfile/', CreateProfile.as_view()),
     path('profile/', Profiledata.as_view(), name="profile"),
