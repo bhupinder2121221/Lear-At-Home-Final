@@ -2,7 +2,7 @@
 from tkinter import Widget
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Post
+from .models import Post, Sellers
 
 
 class LoginForm(forms.Form):
@@ -18,10 +18,10 @@ class addSubject(forms.Form):
 
 
 class addItemForm(forms.Form):
-    sellersChoices = (
+    sellersChoices = [
         ('1', 'Bhupinder'),
         ('2', 'Yash'),
-    )
+    ]
     category_choice = (
         ('books', 'Books'),
         ('extra', 'Extra')

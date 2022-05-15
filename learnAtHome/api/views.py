@@ -374,9 +374,25 @@ class AddLectures(APIView):
 
 # buy items
 
-class AddItem(generics.CreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = StoreItemsSerializer
+class AddItem(APIView):
+    def post(self, request):
+
+        try:
+            seller = Sellers.objects.get(id=request.data['seller'])
+            s = StoreItems.objects.create(
+                title=request.data['title'],
+                price=request.data['price'],
+                image=request.data['image'],
+                category=request.data['category'],
+                noOfItems=request.data['noOfItems'],
+                classtype=request.data['classtype'],
+                seller=seller
+            )
+            s.save()
+        except Exception as e:
+            print("Error ", e)
+
+        return Response({'status': '200'})
 
 
 class GetItems(APIView):

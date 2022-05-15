@@ -1,6 +1,6 @@
 <!-- remove not in if statement fo superuser -->
 
-{% extends 'base.html' %} {% block blogs %} {% if not superUser %}
+{% extends 'base.html' %}{% load static%} {% block blogs %} {% if not superUser %}
 <div onclick="expandClassDiv()" style="cursor: pointer" class="text-end">
   <h1 id="addbtn" class="add-btn">Add Class</h1>
 </div>
@@ -102,11 +102,13 @@
 <br />
 {%for n in materials %}
 <div class="card" style="width: 10.8rem; margin: 3px; display: inline-block">
-  <div class="classboxes"></div>
-  <a href="{%url 'buyitem' n %}">
+  <div class="classboxes">
+    <img class="img-fluid" src="{% static n.file %}">
+  </div>
+  <a href="{%url 'buyitem' n.name %}">
     <div class="card-body">
       <p class="card-text">
-        <b>Buy {{n}}</b>
+        <b>Buy {{n.name}}</b>
       </p>
     </div>
   </a>

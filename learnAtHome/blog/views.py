@@ -864,7 +864,12 @@ class ClassroomHome(LoginRequiredMixin, View):  # global view
         # getting classes data
         classes, secondaryclasses = get_classNumbers(request)
 
-        materials = ['Books', 'Stationary']
+        materials = [
+            {'name': 'Books', 'file': "images/Books.jpg"},
+
+            {'name': 'Stationary', 'file': 'images/Stationary.jpg'}
+        ]
+
         if request.user.is_authenticated:
 
             profile_endpoint = "http://127.0.0.1:8000/api/profile/"
@@ -1052,6 +1057,8 @@ def addItemfunction(request, dataToSent):
     endpoint = "http://127.0.0.1:8000/api/addstoreitem/"
     response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
         request.session.get('token'))}, data=dataToSent)
+    print(response.json())
+    print("adding done")
 
 
 def getclasstype(st):
@@ -1071,8 +1078,9 @@ def getItemDetails(request, filter):
 
         for item in response.json():
 
-            print(item['classtype'].split(" ")[1] > '09')
-            if getclasstype(item['classtype'].split(" ")[1]) > '09':
+            # print(item['classtype'].split(" ")[1] > '09')
+            a = item['classtype'].split(" ")
+            if getclasstype(a[len(a)-1]) > '09':
                 if item['classtype'] in temp:
                     temp[str(item['classtype'])].append(item)
                 else:
@@ -1094,6 +1102,7 @@ def getItemDetails(request, filter):
                 data[str(item['classtype'])].append(item)
             else:
                 data[str(item['classtype'])] = [item]
+        print(data)
         return data
 
 
@@ -1111,8 +1120,8 @@ class BuyItem(LoginRequiredMixin, View):
             data['price'] = form.cleaned_data['price']
             data['image'] = form.cleaned_data['image']
             data['noOfItems'] = form.cleaned_data['noOfItems']
-            data['category'] = form.cleaned_data['category']
-            data['classtype'] = form.cleaned_data['classtype']
+            data['category'] = form.cleaned_data['category'].lower()
+            data['classtype'] = form.cleaned_data['classtype'].lower()
             addItemfunction(request, data)
         else:
             return self.get(request, item, form)
