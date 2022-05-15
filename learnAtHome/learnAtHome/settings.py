@@ -147,3 +147,4 @@ REST_FRAMEWORK = {
         # "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ]
 }
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880

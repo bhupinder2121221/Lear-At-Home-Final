@@ -1,6 +1,6 @@
 
 from django.urls import path, re_path
-from .views import detailed_Post, EditUserSpecificPost, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData, GetOrders
+from .views import detailed_Post, DetailPost, EditProfile, EditUserSpecificPost, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData, GetOrders
 from rest_framework.authtoken.views import obtain_auth_token
 
 # jwt token authentication
@@ -37,8 +37,9 @@ urlpatterns = [
     path('classroom/subjects/lectures/add',
          AddLectures.as_view(), name="add_lecture_in_subject"),
     # ------------------------------------------------------------
-
+    path('editprogile/', EditProfile.as_view(), name="editprofileapi"),
     #   posts ------------------------------------------------------
+    path('detailPostApi/', DetailPost.as_view(), name='delailpostapi'),
     path('deletepost/', DeleteUserSpecificPost.as_view(), name="deletePost"),
     path('editpost/', EditUserSpecificPost.as_view(), name="editpostapi"),
     path('filterFollowers/', FollowersPostFilter.as_view(), name="filterfollowing"),
@@ -50,5 +51,5 @@ urlpatterns = [
     path('user/', CreateUserSedicificPost.as_view(), name="createuserPost"),
     path('user/follower/', FollowersView.as_view(), name='followURLAPI'),
     re_path(r'^user/(?:post-(?P<post_id>[0-9]{1,}))/$',
-            UserSpecificPostDetailView.as_view(), name="userPostsDetalView")
+            UserSpecificPostDetailView.as_view(), name="userPostsDetalView"),
 ]

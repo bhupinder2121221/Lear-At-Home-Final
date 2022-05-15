@@ -2,6 +2,9 @@
 # paytm imports ------------------------------------
 from distutils.log import Log
 from email import message
+from sre_constants import IN
+
+from django import views
 from .models import StoreItems, OrderedItmes, Sellers
 from django.forms import EmailInput
 from paytmchecksum import PaytmChecksum
@@ -368,6 +371,36 @@ def followedView(request, pageno, SecondEmail, redirecturl):
     return redirect(redirecturl.replace('&', "/"))
 
 
+def getPostDetail(request, postid):
+    endpoint = "http://127.0.0.1:8000/api/detailPostApi/"
+    response = requests.post(endpoint, headers={
+        'Authorization': "SecretToken "+str(request.session.get('token'))},
+        data={'postid': postid})
+    return response.json()
+
+
+class DetialView(LoginRequiredMixin, View):
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+
+    def get(self, request, postid):
+        profile_response, aditional_data = get_Profiledata(request)
+        post = getPostDetail(request, postid)
+        if 'error' in post:
+            messages.add_message(request, messages.INFO,
+                                 "Server error. Try again later.")
+            return redirect('defaultHomeUrl')
+
+        # print(post)
+        context = {
+            'profile': profile_response.json(),
+            'otherdata': aditional_data,
+            'post': post
+
+        }
+        return render(request, 'detailView.html', context)
+
+
 class EditPostView(LoginRequiredMixin, View):
     login_url = "/login/"
     redirect_field_name = "redirect_to"
@@ -395,12 +428,15 @@ class EditPostView(LoginRequiredMixin, View):
                     response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
                         request.session.get('token'))}, data={'post_id': postid, 'title': title, 'content': content, 'image': image})
                 if response.json()['status'] == '200':
-                    messages.add_message(request, messages.INFO, "Post updated successfully.")
+                    messages.add_message(
+                        request, messages.INFO, "Post updated successfully.")
                 else:
-                    messages.add_message(request, messages.INFO, "Post not updated. Please try again later.")
+                    messages.add_message(
+                        request, messages.INFO, "Post not updated. Please try again later.")
                 return redirect('defaultHomeUrl')
         else:
-            messages.add_message(request, messages.INFO, "All fields are medatory.")
+            messages.add_message(request, messages.INFO,
+                                 "All fields are medatory.")
         return redirect('editpost', postid=postid)
 
     def get(self, request, postid):
@@ -631,6 +667,72 @@ def register_page(request):
 # checking login credentials
 
 
+class EditProfile(LoginRequiredMixin, View):
+    login_url = '/login'
+    redirect_field_name = 'redirect_to'
+
+    def post(self, request):
+        fname = request.POST.get('fname', False)
+        lname = request.POST.get('lname', False)
+        address = request.POST.get('address', False)
+        image = request.POST.get('profileimage')
+        if fname and lname and address:
+            if len(fname) < 3 or len(fname) > 15:
+                messages.add_message(request, messages.INFO,
+                                     "First name must be between 3-15 characters.")
+                return redirect('editprofileview')
+            elif len(lname) < 1 or len(lname) > 15:
+                messages.add_message(request, messages.INFO,
+                                     "Last name must be between 3-15 characters. ")
+                return redirect('editprofileview')
+            elif len(address) < 3 or len(address) > 1000:
+                messages.add_message(request, messages.INFO,
+                                     "Address must be between 3 to 1000 characters.")
+                return redirect('editprofileview')
+            else:
+                endpoint = "http://127.0.0.1:8000/api/editprogile/"
+                response = 0
+                if image == "" and len(image) > 12:
+                    response = requests.post(endpoint, headers={
+                                             'Authorization': 'SecretToken '+str(request.session.get('token'))},
+                                             data={
+                                                 'fname': fname,
+                                                 'lname': lname,
+                                                 'address': address
+                    })
+                else:
+                    response = requests.post(endpoint, headers={
+                                             'Authorization': 'SecretToken '+str(request.session.get('token'))},
+                                             data={
+                                                 'fname': fname,
+                                                 'lname': lname,
+                                                 'image': image,
+                                                 'address': address
+                    })
+                if response.json()['status'] == "200":
+                    messages.add_message(
+                        request, messages.INFO, "Profile updated successfully")
+                    return redirect('defaultHomeUrl')
+                else:
+                    messages.add_message(
+                        request, messages.INFO, "Server Error. Trye again later.")
+                    return redirect('editprofileview')
+
+        else:
+            messages.add_message(request, messages.INFO,
+                                 "All fields are medatory.")
+        return redirect('editprofileview')
+
+    def get(self, request):
+        profile_data, aditional_data = get_Profiledata(request)
+        print(profile_data.json().keys())
+        context = {
+            'profile': profile_data.json(),
+            'otherdata': aditional_data,
+        }
+        return render(request, 'profile.html', context)
+
+
 def checkLoginCredentials(request, email, password):
 
     user = authenticate(request, username=email, password=password)
@@ -722,7 +824,7 @@ def get_classNumbers(request):
     temp = 0
     if response:
         for classobj in response.json():
-            if classobj["classtype"] == "primary":
+            if classobj["classtype"].lower() == "primary":
                 if classobj["myclass"][5:] == "10":
                     temp = classobj
                 else:
@@ -737,10 +839,10 @@ def get_classNumbers(request):
     return primaryClasses, secondaryClasses
 
 
-def add_classNumbers(request, classno, classtype):
+def add_classNumbers(request, classno, classtype, image):
     endpoint = "http://127.0.0.1:8000/api/classroom/"
     response = requests.post(endpoint, headers={
-        'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={"classno": str(classno), "classtype": classtype.capitalize()})
+        'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={"classno": str(classno), 'image': image, "classtype": classtype.capitalize()})
     print(response)
 
 
@@ -750,9 +852,9 @@ class ClassroomHome(LoginRequiredMixin, View):  # global view
 
     def post(self, request):
         form = addClass(request.POST)
-        if form.is_valid():
+        if form.is_valid() and len(request.POST.get('classimage', "")) > 12:
             add_classNumbers(
-                request, form.cleaned_data['className'], form.cleaned_data['classType'])
+                request, form.cleaned_data['className'], form.cleaned_data['classType'], request.POST.get('classimage'))
         return self.get(request)
 
     def get(self, request):
@@ -810,6 +912,7 @@ def add_subject(request, classno, subjectName, image):
     endpoint = "http://127.0.0.1:8000/api/classroom/subjects/add"
     response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
         request.session.get('token'))}, data={"classno": classno, 'subjectName': subjectName, 'image': image})
+    print(response.json())
     return response
 
 
@@ -824,7 +927,9 @@ class subjectsView(LoginRequiredMixin, View):
             print(form.cleaned_data['subjectName'], "-------------------")
             if add_subject(request, classno, form.cleaned_data['subjectName'], request.POST.get('imagefile')):
                 print("subject added successfully :---------")
-                return redirect('classroom_subjects', classno[5:])
+
+            return redirect('classroom_subjects', classno[5:])
+
         else:
             print("form is not valid ----------------------")
             classno = "class"+str(classno)

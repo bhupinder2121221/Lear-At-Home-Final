@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block blogs %}
+<div class="container-fluid">
+  <div
+    class="text-center text-danger"
+    style="font-size: 1.5rem; font-weight: bold; text-transform: capitalize"
+  >
+    {{post.title}}
+  </div>
+  <div
+    class="container mt-4"
+    style="
+      border: 3px solid red;
+      border-radius: 12px;
+      box-shadow: 0px 0px 5px grey;
+    "
+  >
+    <img class="img-fluid" src="{{post.image}}" />
+  </div>
+  <div class="container">
+    <div
+      class="text-start mx-1 mt-3"
+      style="font-weight: bold; text-transform: capitalize"
+    >
+      Author : <span style="color: darkgrey">{{post.author}}</span>
+    </div>
+  </div>
+  <div class="container">
+    <div
+      class="text-start mx-1 mt-3"
+      style="font-weight: bold; text-transform: capitalize"
+    >
+      Date Time :
+      <span class="mx-2" style="color: darkgrey">{{post.dateTime}}</span>
+    </div>
+  </div>
+  <div
+    class="container mb-4 mt-3"
+    style="
+      min-height: 200px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      border: 1px solid gray;
+    "
+  >
+    <div
+      class="text-start mx-1 mt-3"
+      style="font-weight: bold; text-transform: capitalize"
+    >
+      {{post.content}}
+    </div>
+  </div>
+  <div class="container m-3 text-center">
+    <a class="btn btn-danger" href="http://127.0.0.1:8000/">Go Back</a>
+  </div>
+  <br />
+  <br />
+</div>
+{% endblock blogs %}

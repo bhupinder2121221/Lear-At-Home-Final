@@ -30,6 +30,13 @@
         <h5 class="card-title">Post Title : {{post.title}}</h5>
         <p class="card-text">Details in Brief: {{post.content}} ...</p>
       </div>
+      <div
+        onclick="redirectToDetailPage('{{post.post_id}}')"
+        class="container text-center text-danger"
+        style="cursor: pointer"
+      >
+        View Full Article
+      </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-end" style="border: none">
           <span style="float: left">{{ post.author }}</span>
@@ -90,6 +97,7 @@
                   <div
                     onclick="redirectTo1('{{post.post_id}}')"
                     class="dropdown-item"
+                    style="cursor: pointer"
                   >
                     Edit
                   </div>
@@ -98,6 +106,7 @@
                   <div
                     onclick="confirmaction('{{post.post_id}}')"
                     class="dropdown-item"
+                    style="cursor: pointer"
                   >
                     Delete
                   </div>
@@ -174,6 +183,9 @@
     } else {
       window.location.href = url + "/" + post_id;
     }
+  }
+  function redirectToDetailPage(postid) {
+    window.location.href = "http://127.0.0.1:8000/detailpost/" + postid + "/";
   }
   function redirectTo1(postid) {
     window.location.href = "http://127.0.0.1:8000/editpost/" + postid + "/";

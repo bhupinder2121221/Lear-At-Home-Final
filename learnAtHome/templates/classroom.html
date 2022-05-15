@@ -16,9 +16,22 @@
       {{form.classType}}
     </div>
     <div class="form-text">Primary , Secondary , etc.</div>
-    <div class="container mt-5 text-center">
-      <button type="submit" class="btn btn-danger">Add Class</button>
+
+    <div class="form-group">
+      <div class="form-label">Image</div>
+      <input id="subject_hidden_img" name="classimage" type="hidden" />
+              <input
+                id="subject_banner_img"
+                onchange="imageLoader()"
+                type="file"
+                class="form-control"
+              />
+            </div>
+            <div class="container mt-5 text-center">
+              <button type="submit" class="btn btn-danger">Add Class</button>
+            </div>
     </div>
+    
   </form>
 </div>
 {% endif %}

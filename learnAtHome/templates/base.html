@@ -73,6 +73,7 @@
                                 <div onclick="navbarsection()" class="navbarclosebtn">X</div>
                                 
                                 <div class="card profile" style="border:none;width:100%" >
+                                    
                                     <img class="profilePic" src="{% static 'images/anonymous.jpeg'%}" alt="profile pic" />
                                      <div class="card-body">
                                       <p class="card-text text-center">Anonymous</p>
@@ -106,7 +107,11 @@
                                 <h5 class="text-center" style="padding-top: 20px;">Profile</h5>
                                 <div onclick="navbarsection()" class="navbarclosebtn">X</div>
                                 
-                                <div class="card profile" style="width: 100%;border:none;" >
+                                <div class="card profile" style="width: 100%;border:none; cursor: pointer;" >
+                                    <div onclick="editprofileredirect()" class="container text-end" style="    position: relative;
+                                    top: 33px;">
+                                    <i class="fa-solid fa-pen-to-square" style="font-size: 1.5rem;"></i>
+                                    </div>
                                     <img class="profilePic" src="{{profile.profile}}" class="card-img-top" alt="...">
                                     <div class="card-body">
                                       <p class="card-text text-center">{{profile.email}}</p>
@@ -500,6 +505,9 @@
             console.log(document.getElementById('subject_hidden_img').value);
         }
         reader.readAsDataURL(file)
+    }
+    function editprofileredirect(){
+        window.location.href ="http://127.0.0.1:8000/editprofile/";
     }
     
     

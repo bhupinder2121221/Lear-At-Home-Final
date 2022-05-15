@@ -1,6 +1,7 @@
 
 from urllib import response
 from django.http import JsonResponse
+from numpy import imag
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from blog.models import CustomUser, Post, PostLikes, RegisterFormModel, FolowersModel, FollowdByModel, Classes_and_subjects, Sellers, viedo_lectures, subjects, StoreItems, OrderedItmes
@@ -126,6 +127,40 @@ class CreateUserSedicificPost(generics.CreateAPIView):
             return Response({'error': 'Error in save'})
 
 
+class DetailPost(APIView):
+    def post(self, request):
+        postid = request.POST['postid']
+        try:
+            p = Post.objects.get(post_id=postid)
+            data = PostSearlizers(p).data
+            return Response(data)
+        except:
+            return Response({'error': True})
+
+
+class EditProfile(APIView):
+    def post(self, request):
+        fname = request.data['fname']
+        lname = request.data['lname']
+        address = request.data['address']
+        image = request.data.get('image')
+        try:
+            p = CustomUser.objects.get(email=request.user.email)
+            if image != "":
+                print("Image changed")
+                p.profile = image
+            else:
+                print("No image provide in profile edit api")
+            p.fname = fname
+            p.lname = lname
+            p.permanent_address = address
+            p.save()
+            return Response({'status': "200"})
+        except Exception as e:
+            print("Error : ", e)
+            return Response({'status': '500'})
+
+
 class DeleteUserSpecificPost(APIView):
     def post(self, request):
         username = request.user.email
@@ -248,9 +283,12 @@ class GetClasses(APIView):
 
         classno = request.data["classno"]
         classtype = request.data["classtype"]
+        image = request.data['image']
         cl = Classes_and_subjects.objects.create(
             myclass="class"+str(classno),
-            classtype=str(classtype))
+            classtype=str(classtype),
+            picture=image
+        )
         cl.save()
         return Response({'status': "database created"})
 
@@ -275,11 +313,18 @@ class AddSubjects(APIView):
         classno = request.data["classno"]  # classno=class1
         subjectName = request.data["subjectName"]
         image = request.data["image"]
-        sb = subjects.objects.create(subject=subjectName, image=image)
-        sb.save()
-        cl = Classes_and_subjects.objects.get(myclass=classno)
-        cl.subject.add(sb)
-        cl.save()
+        try:
+            sb = subjects.objects.create(subject=subjectName, image=image)
+            sb.save()
+            print("-----------------------------dc")
+            cl = Classes_and_subjects.objects.get(myclass=classno)
+            cl.subject.add(sb)
+            print("++++++++++++++++++++++++++dfd")
+            cl.save()
+            print("+++++++++++++++===============++++++++++++")
+        except Exception as e:
+            print("Error : ", e)
+            return Response({'status': 'error in database in add subject api '})
         return Response({"status": "database updated"})
 
 

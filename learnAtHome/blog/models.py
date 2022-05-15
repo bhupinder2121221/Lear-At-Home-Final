@@ -111,7 +111,7 @@ class Classes_and_subjects(models.Model):
     myclass = models.CharField(max_length=20)
     classtype = models.CharField(max_length=30, default="Not Provided")
     subject = models.ManyToManyField(subjects)
-    picture = models.ImageField('bannerpic', upload_to="banners/", default="")
+    picture = models.TextField('bannerpic', default="")
 
     def __str__(self) -> str:
         return self.myclass
