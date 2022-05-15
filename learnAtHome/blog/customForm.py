@@ -1,4 +1,5 @@
 
+from tkinter import Widget
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Post
@@ -68,23 +69,29 @@ class nameFieled(forms.CharField):
                 raise ValidationError("The Name filed is empty")
 
 
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = ['title', 'content']
+class PostForm(forms.Form):
+    title = forms.CharField(label="Class", widget=forms.TextInput(attrs={'class': 'form-control'}), max_length=100, error_messages={
+        'required': "Class field is required.", "max_length": "Max 15 characters allowed."})
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'}), max_length=1000, min_length=2)
 
-        def clean_title(self):
-            if len(title) > 255:
-                raise ValidationError("Title Cannot exceds 255 characters.")
+# class PostForm(forms.ModelForm):
+#     class Meta:
+#         model = Post
+#         fields = ['title', 'content']
 
-        def clean_content(self):
-            if len(content) > 10000:
-                raise ValidationError("Content cannot exceds 10000 characters")
+#         def clean_title(self):
+#             if len(title) > 255:
+#                 raise ValidationError("Title Cannot exceds 255 characters.")
 
-    def fill_rest_fileds(self, user_given, pl, dt):
-        self.author = user_given
-        self.postlike = pl
-        self.dateTime = dt
+#         def clean_content(self):
+#             if len(content) > 10000:
+#                 raise ValidationError("Content cannot exceds 10000 characters")
+
+#     def fill_rest_fileds(self, user_given, pl, dt):
+#         self.author = user_given
+#         self.postlike = pl
+#         self.dateTime = dt
 
 
 class RegisterForm(forms.Form):

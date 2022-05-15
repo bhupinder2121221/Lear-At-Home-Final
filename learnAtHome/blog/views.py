@@ -122,6 +122,7 @@ def user_homePage(request, pageno, filter=None):
     profile_response = requests.get(profile_endpoint, headers={
                                     'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={"username": request.user.email})
     aditional_data = getdetailOfProfile(profile_response.json()['email'])
+    print("There are total ", len(posts.json()), " Posts")
     if filter != None:
         if filter == "desc":
             filtertag = "Newest"
@@ -137,7 +138,7 @@ def user_homePage(request, pageno, filter=None):
             posts = posts.json()
             postsArray = []
             for post in posts:
-                print(post)
+                # print(post)
                 if post['author'] == request.user.email:
                     postsArray.append(post)
             posts = postsArray
@@ -158,7 +159,7 @@ def user_homePage(request, pageno, filter=None):
     request.session['profileData'] = profile_response.json()
     request.session['additionalData'] = aditional_data
 
-    nodata = True
+    nodata = False
     if pageno > pages.num_pages:
         pageno = pages.num_pages
         nodata = True
@@ -215,7 +216,7 @@ def user_homePage(request, pageno, filter=None):
         'nodata': nodata,
         'myfeeds': True
     }
-    print(context)
+    print(len(context['posts']), context['nodata'])
     return render(request, 'home.html', context)
 
 
@@ -415,33 +416,79 @@ class New_PostPage(LoginRequiredMixin, View):
     def post(self, request):
         myform = PostForm(request.POST, request.FILES)
         if myform.is_valid():
-            print(myform.cleaned_data['title'])
+            # print(myform.cleaned_data['title'])
             datajson = {}
             datajson['title'] = myform.cleaned_data['title']
             datajson['content'] = myform.cleaned_data['content']
-            datajson['author'] = request.user.email
             datajson['dateTime'] = datetime.now(timezone('Asia/Kolkata'))
             datajson['image'] = request.POST.get('subject_hidden_img')
+            if datajson['image'] == "":
+                messages.add_message(
+                    request, messages.INFO, "Blog Image is mandatory.")
+                context = {
+                    'form': myform,
+                    'friendpost': True,
+                    "pageno": 1,
+                    'author': request.user.email,
+                    # 'friendlist': request.session.get('friendListData'),
+                    'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers={'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={'username': request.user.email}).json(),
+                    'otherdata': getdetailOfProfile(request.user.email)
 
+                }
+                return render(request, 'newPost.html', context)
             # resutlt = requests.post("http://localhost:8000/api/user/", headers={
             # 'Authorization': "SecretToken "+str(request.session.get('token'))}, data = datajson)
-            print(datajson)
+            # print(datajson)
+            try:
+                pl = PostLikes.objects.create()
+                pl.save()
+                p = Post.objects.create(
+                    title=datajson['title'],
+                    content=datajson['content'],
+                    author=request.user,
+                    dateTime=datajson['dateTime'],
+                    image=datajson['image'],
+                    postlike=pl
+                )
+                p.save()
+                print("Post created successfully")
+                messages.add_message(
+                    request, messages.INFO, "Post creation succesfully")
+            except Exception as e:
+                print("Error in post creation", e)
+                messages.add_message(
+                    request, messages.INFO, " Error in Post creation. Try again later")
+            context = {
+                'form': myform,
+                'friendpost': True,
+                "pageno": 1,
+                'author': request.user.email,
+                # 'friendlist': request.session.get('friendListData'),
+                'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers={'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={'username': request.user.email}).json(),
+                'otherdata': getdetailOfProfile(request.user.email)
+
+            }
+            return render(request, 'newPost.html', context)
 
             # if resutlt.json()['error'] == 'no error':
             #     return HttpResponse("Post saved successfully")
             # else:
-            #     context={
-            #         'form': myform,
-            #         'error': resutlt.error,
-            #         "pageno": 1,
-            #         'friendpost': True,
-            #         # 'friendlist': request.session.get('friendListData'),
-            #         'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers = {'Authorization': 'SecretToken '+str(request.session.get('token'))}, data = {'username': request.user.email}).json(),
-            #         'otherdata': getdetailOfProfile(request.user.email)
-            #     }
+            # context={
+            #     'form': myform,
+            #     'error': resutlt.error,
+            #     "pageno": 1,
+            #     'friendpost': True,
+            #     # 'friendlist': request.session.get('friendListData'),
+            #     'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers = {'Authorization': 'SecretToken '+str(request.session.get('token'))}, data = {'username': request.user.email}).json(),
+            #     'otherdata': getdetailOfProfile(request.user.email)
+            # }
             #     return render(request, 'newPost.html', context)
-            return HttpResponse("Success")
+            # return HttpResponse("Success")
         else:
+            for field in myform.errors.as_data():
+                # print(field)
+                messages.add_message(
+                    request, messages.INFO, "Check " + str(field) + " field")
             context = {
                 'form': myform,
                 'friendpost': True,
@@ -612,8 +659,9 @@ def get_classNumbers(request):
             else:
                 secondaryClasses[int(classobj["myclass"][5:])
                                  ] = classobj['picture']
-    primaryClasses[int(temp["myclass"][5:])
-                   ] = temp['picture']
+    if temp != 0:
+        primaryClasses[int(temp["myclass"][5:])
+                       ] = temp['picture']
     return primaryClasses, secondaryClasses
 
 

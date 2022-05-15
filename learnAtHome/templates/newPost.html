@@ -1,9 +1,14 @@
 {% extends 'base.html' %} {% block blogs %}
 <div class="container">
   <div class="container">
-    <h1 class="text-center">New Post</h1>
+    <h1
+      class="text-center"
+      style="color: red; font-family: revert; font-weight: bold"
+    >
+      New Post
+    </h1>
   </div>
-  <hr />
+  <hr style="height: 2px; color: red" />
   <!-- action="http://127.0.0.1:8000/api/user/" -->
   <form
     action=""
@@ -36,7 +41,7 @@
         <br />
         <div class="row">
           <div class="col-4">
-            <label class="form-label">Image For Blog</label>
+            <label class="form-label">Post Image</label>
           </div>
           <div class="col-8">
             <input
@@ -53,10 +58,15 @@
           </div>
         </div>
         <br />
+        {% if messages %} {% for message in messages %}
+        <li>{% if message.tags %} {{ message }} {% endif %}</li>
+        {% endfor %} {% endif %}
         <br />
-        <div class="row">
+        <div class="row text-center mb-3">
           <div class="col-12">
-            <button type="submit" class="btn btn-danger">Submit</button>
+            <button type="submit" class="btn btn-danger" style="width: 100%">
+              Submit
+            </button>
           </div>
         </div>
       </div>
