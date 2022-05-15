@@ -88,7 +88,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
                   <div
-                    onclick="confirmaction('{{post.post_id}}')"
+                    onclick="redirectTo1('{{post.post_id}}')"
                     class="dropdown-item"
                   >
                     Edit
@@ -172,8 +172,11 @@
     if (parseInt(post_id) < 0) {
       alert("Please try later.");
     } else {
-      window.location.replace(url + "/" + post_id);
+      window.location.href = url + "/" + post_id;
     }
+  }
+  function redirectTo1(postid) {
+    window.location.href = "http://127.0.0.1:8000/editpost/" + postid + "/";
   }
 </script>
 {% endblock scripts%}

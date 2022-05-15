@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from blog.views import Login_Page, homePage, DeletePostView, register_page, logout_page, New_PostPage, postlikeView, followedView, friendPostView, ClassroomHome, BuyItem, subjectsView, LecturesView, FreindList, PlaceOrder, PaytmCallback, paymentCheckingView, OrderView
+from blog.views import Login_Page, EditPostView, homePage, DeletePostView, register_page, logout_page, New_PostPage, postlikeView, followedView, friendPostView, ClassroomHome, BuyItem, subjectsView, LecturesView, FreindList, PlaceOrder, PaytmCallback, paymentCheckingView, OrderView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -49,6 +49,7 @@ urlpatterns = [
     path('register/', register_page, name='registerUrl'),
     path('deletepost/<str:postid>/',
          DeletePostView.as_view(), name="deletePost"),
+    path('editpost/<str:postid>/', EditPostView.as_view(), name='editpost'),
     path('logout', logout_page, name='logoutUrl'),
     path('makepost', New_PostPage.as_view(), name="newPostUrl"),
 

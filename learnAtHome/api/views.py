@@ -137,6 +137,29 @@ class DeleteUserSpecificPost(APIView):
         return Response({'status': '200'})
 
 
+class EditUserSpecificPost(APIView):
+    def post(self, request):
+        print("eneter in edit post api")
+        username = request.user.email
+        postid = int(request.data['post_id'])
+        title = request.data['title']
+        content = request.data['content']
+        image = request.data.get('image', False)
+        print("going for edditng db")
+        try:
+            p = Post.objects.get(post_id=postid)
+            p.title = title
+            p.content = content
+            if image:
+                p.image = image
+            p.save()
+            print("done")
+            return Response({'status': '200'})
+        except:
+            print("error")
+            return Response({'status': '500'})
+
+
 class UserSpecificPostDetailView(generics.RetrieveDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSearlizers

@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block blogs %}
 <div class="container">
+  {% if not editpost %}
   <div class="container">
     <h1
       class="text-center"
@@ -72,6 +73,108 @@
       </div>
     </div>
   </form>
+  {% else %}
+  <div class="container">
+    <h1
+      class="text-center"
+      style="color: red; font-family: revert; font-weight: bold"
+    >
+      Edit Post
+    </h1>
+  </div>
+  <hr style="height: 2px; color: red" />
+  <!-- action="http://127.0.0.1:8000/api/user/" -->
+  <form
+    action=""
+    target="/makepost"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <input type="hidden" name="author" value="{{author}}" />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">{{error}}</div>
+        <div class="row">
+          <div class="col-4">
+            <label class="form-label">Title Of Blog</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              class="form-control"
+              value="{{posttitle}}"
+              name="posttitle"
+              id=""
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-4">
+            <label clas="form-label">Content</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              class="form-control"
+              value="{{postcontent}}"
+              name="postcontent"
+              id=""
+            />
+          </div>
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="col-4">
+            <label class="form-label">Post Image</label>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <img class="img-fluid" src="{{postimage}}" />
+            </div>
+
+            <div class="col-12">
+              <input id="subject_hidden_img" name="postimage" type="hidden" />
+              <input
+                id="subject_banner_img"
+                onchange="imageLoader()"
+                type="file"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        {% if messages %} {% for message in messages %}
+        <li>{% if message.tags %} {{ message }} {% endif %}</li>
+        {% endfor %} {% endif %}
+        <br />
+        <div class="row text-center mb-3">
+          <div class="col-12">
+            <button type="submit" class="btn btn-danger" style="width: 100%">
+              Edit Post
+            </button>
+            <button
+              onclick="redirectToHome()"
+              class="btn btn-success mt-3"
+              style="width: 100%"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  {% endif %}
 </div>
 
-{% endblock blogs %}
+{% endblock blogs %} {% block scripts%}
+<script>
+  function redirectToHome() {
+    window.location.href = "http://127.0.0.1:8000/";
+  }
+</script>
+{% endblock scripts%}

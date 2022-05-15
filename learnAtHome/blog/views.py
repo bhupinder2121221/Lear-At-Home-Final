@@ -368,6 +368,66 @@ def followedView(request, pageno, SecondEmail, redirecturl):
     return redirect(redirecturl.replace('&', "/"))
 
 
+class EditPostView(LoginRequiredMixin, View):
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+
+    def post(self, request, postid):
+        title = request.POST.get('posttitle', False)
+        content = request.POST.get('postcontent', False)
+        image = request.POST.get('postimage', False)
+        if title and content:
+            if len(title) < 3 or len(title) > 101:
+                messages.add_message(request, messages.INFO,
+                                     'Title must be between 3-100 characters')
+            elif len(content) < 3 or len(content) > 1000:
+                messages.add_message(request, messages.INFO,
+                                     'Content must be between 3-1000 characters')
+            else:
+                endpoint = "http://127.0.0.1:8000/api/editpost/"
+                response = 0
+                if image == "":
+                    print("No image provided in edit post")
+                    response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
+                        request.session.get('token'))}, data={'post_id': postid, 'title': title, 'content': content})
+                else:
+                    print('Image provided in edit post')
+                    response = requests.post(endpoint, headers={'Authorization': 'SecretToken '+str(
+                        request.session.get('token'))}, data={'post_id': postid, 'title': title, 'content': content, 'image': image})
+                if response.json()['status'] == '200':
+                    messages.add_message(request, messages.INFO, "Post updated successfully.")
+                else:
+                    messages.add_message(request, messages.INFO, "Post not updated. Please try again later.")
+                return redirect('defaultHomeUrl')
+        else:
+            messages.add_message(request, messages.INFO, "All fields are medatory.")
+        return redirect('editpost', postid=postid)
+
+    def get(self, request, postid):
+        try:
+            p = Post.objects.get(post_id=postid)
+
+            context = {
+                'editpost': True,
+                'posttitle': p.title,
+                'postcontent': p.content,
+                'postimage': p.image,
+                'author': request.user.email,
+                'friendpost': True,
+                "pageno": 1,
+                'otherdata': getdetailOfProfile(request.user.email),
+                # 'friendlist': request.session.get('friendListData'),
+                'profile': requests.get('http://127.0.0.1:8000/api/profile/', headers={'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={'username': request.user.email}).json()
+            }
+            return render(request, 'newPost.html', context)
+
+        except Exception as e:
+            print("error in edit post view : ", e)
+            messages.add_message(request, messages.INFO,
+                                 'Server Error. Please try again later.')
+            return redirect('defaultHomeUrl')
+
+
 class DeletePostView(LoginRequiredMixin, View):
     login_url = "/login/"
     redirect_field_name = "redirect_to"

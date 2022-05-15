@@ -1,6 +1,6 @@
 
 from django.urls import path, re_path
-from .views import detailed_Post, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData, GetOrders
+from .views import detailed_Post, EditUserSpecificPost, GlobalPostsListView, GlobalPostsDetailView, UserSpecificPostDetailView, CreateUserSedicificPost, Profiledata, CreateProfile, FollowersView, friendListApi, FollowersPostFilter, DeleteUserSpecificPost, GetClasses, GetSubjects, AddSubjects, GetLectures, AddLectures, AddItem, GetItems, GetItemDetail, GetSellerData, GetOrders
 from rest_framework.authtoken.views import obtain_auth_token
 
 # jwt token authentication
@@ -40,6 +40,7 @@ urlpatterns = [
 
     #   posts ------------------------------------------------------
     path('deletepost/', DeleteUserSpecificPost.as_view(), name="deletePost"),
+    path('editpost/', EditUserSpecificPost.as_view(), name="editpostapi"),
     path('filterFollowers/', FollowersPostFilter.as_view(), name="filterfollowing"),
     path('createProfile/', CreateProfile.as_view()),
     path('profile/', Profiledata.as_view(), name="profile"),
