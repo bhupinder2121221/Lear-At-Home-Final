@@ -145,6 +145,7 @@ class OrderedItmes(models.Model):
     datetime = models.CharField(max_length=100)
     totalPrice = models.IntegerField()
     transectionId = models.TextField()
+    noOfItems = models.IntegerField(default=0)
     buyer_email = models.CharField(max_length=50, default="Not Given")
     address = models.TextField(default="No Address Given")
 

@@ -3,6 +3,7 @@
   <form>
     <input id="TotalProducts" type="hidden" value="{{product.noOfItems}}" />
     <input id="productprice" type="hidden" value="{{product.price}}" />
+    
   </form>
   <div class="card mycard mx-auto mt-5 p-0">
     <div class="header">
@@ -35,6 +36,7 @@
             <span>$</span>
             <span id="tot-price">{{product.price}}</span>
             <span>X</span>
+            
             <span id="price-qty">0</span>
           </div>
         </div>
@@ -83,6 +85,7 @@
         <div class="container">
             <div class="row border-dark my-3">
                 <div class="col-4 text-end">Name</div>
+                <input type="hidden" name="sellerpk" value="{{sellerInfo.id}}">
                 <div class="col-8">{{sellerInfo.name}}</div>
               </div>
               <div class="row border-dark my-3">
@@ -107,10 +110,7 @@
           </div>
           <div class="col-9">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
-              dolores vitae possimus officia voluptatum, reiciendis temporibus
-              placeat. Expedita nemo provident quae sunt libero hic, veritatis
-              vitae eaque saepe dolorum! Commodi?
+              {{profile.permanent_address}}
             </p>
           </div>
         </div>
@@ -157,6 +157,7 @@
       </div>
       <form method="POST">
         {%csrf_token%}
+        <input type="hidden" value="" id="noOfItems" name="counts">
         <input type="hidden" name="totalpriceHidden" id="totalpriceHiddenField" value="">
       <button type="submit"  class="btn btn-danger" style="width: 100%;
       font-size: 1.3rem;
@@ -222,6 +223,8 @@
     let shipping = qty * 30;
     let taxes = +parseFloat((subtotal + shipping) * 0.18).toFixed(2);
     let total = subtotal + shipping + taxes;
+    document.getElementById('noOfItems').value = qty;
+    console.log("Total counts : "+qty+"_"+document.getElementById('noOfItems').value)
     document.getElementById("totalpriceHiddenField").value = total;
     return { subtotal, shipping, taxes, total };
   }

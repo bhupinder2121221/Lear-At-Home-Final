@@ -1173,21 +1173,26 @@ class PlaceOrder(LoginRequiredMixin, View):
         totalPriceToPay = request.POST['totalpriceHidden']
         if float(totalPriceToPay) == 0:
             return self.get(request, order_id)
+
+        # request.session['orders_details'] = orders_dict
         orderid = request.user.email+"_" + ''.join([chr(c) for c in numpy.random.randint(98, 112, 10)]) + "_" + \
             str(order_id)
         profile_response, aditional_data = get_Profiledata(request)
-
+        request.session['address'] = request.user.permanent_address
         itemDetail = getItemDetail(request, int(order_id))
         sellerInfo = getSellerData(request, int(order_id))
         payment_params = {}
+        print("No. of count----------", request.POST["counts"])
+        email_plus_count = request.user.email+"."+request.POST["counts"]
         payment_params['body'] = dict(
             requestType="Payment",
             mid=paytm_id,
             websiteName="WEBSTAGING",
             orderId=orderid,
-            callbackUrl=f"http://127.0.0.1:8000/check-payment/paytm/{encrypt(order_id)}/{encrypt(request.user.email)}/{encrypt(totalPriceToPay)}",
+            callbackUrl=f"http://127.0.0.1:8000/check-payment/paytm/{encrypt(order_id)}/{encrypt(email_plus_count)}/{encrypt(totalPriceToPay)}/{encrypt(request.user.permanent_address)}",
             txnAmount=dict(
                 value=str(totalPriceToPay),
+                # value=str(5),
                 currency="INR",
             ),
             userInfo=dict(
@@ -1218,7 +1223,8 @@ class PlaceOrder(LoginRequiredMixin, View):
         context = dict(
             profile=profile_response.json(),
             otherdata=aditional_data,
-            data=payment_page
+            data=payment_page,
+
         )
         print("--------------------------------")
         print("payments parameters : ", payment_params)
@@ -1239,14 +1245,16 @@ class PlaceOrder(LoginRequiredMixin, View):
         return render(request, 'placeorder.html', context)
 
 
-def addOrdersInOrderLIst(id, email, totalprice, txnid):
+def addOrdersInOrderLIst(id, email, totalprice, txnid, address):
     id = decrypt(id) or False
     email = decrypt(email) or False
     totalprice = int(float(decrypt(totalprice))) or False
+    e = email.split(".")
+    email = '.'.join(e[:len(e)-1])
     if id and email and totalprice:
         st = StoreItems.objects.get(id=id)
         ol = OrderedItmes.objects.create(items=st, datetime=str(datetime.now(
-        )), totalPrice=totalprice, transectionId=txnid, buyer_email=email)
+        )), totalPrice=totalprice, transectionId=txnid, noOfItems=int(e[len(e)-1]), buyer_email=email, address=address)
 
         try:
             ol.save()
@@ -1257,8 +1265,18 @@ def addOrdersInOrderLIst(id, email, totalprice, txnid):
 
 
 @csrf_exempt
-def paymentCheckingView(request, id, email, tprice):
+def paymentCheckingView(request, id, email, tprice, address):
     form = request.POST
+    user_address = address
+    # print(form)
+    ordersData = dict(
+        order_id=request.session.get('order_id'),
+        count=request.session.get('count'),
+        totalprice=request.session.get('totalprice')
+
+    )
+    print("Orders Data : ", ordersData)
+    print(request.session.get('orders_details'))
     param_dict = dict(
         order_id=form.get('ORDERID'),
         payment_mode=form.get('PAYMENTMODE'),
@@ -1274,6 +1292,7 @@ def paymentCheckingView(request, id, email, tprice):
         status="Transection Failed",
     )
     param_data = {}
+    print("parameters dic", param_dict)
     if param_dict['response_msg'] != 'Txn Success':
         print("Transection failed")
     else:
@@ -1288,7 +1307,7 @@ def paymentCheckingView(request, id, email, tprice):
             print("Payment is verified")
             context['status'] = "Ordered Successfully"
             addOrdersInOrderLIst(
-                id, email, tprice, param_dict['transection_id'])
+                id, email, tprice, param_dict['transection_id'], user_address)
             return render(request, 'transectionStatus.html', context)
         else:
             print("Payment is not verified")
@@ -1323,6 +1342,7 @@ class OrderView(LoginRequiredMixin, View):
         profile_response, aditional_data = get_Profiledata(request)
         getOrdersDetail(request)
         data = getOrdersDetail(request)
+        print(len(data))
         for item in data:
             print(type(item))
             item['items'] = getItemDetail(request, item['items'])
@@ -1333,5 +1353,5 @@ class OrderView(LoginRequiredMixin, View):
             'otherdata': aditional_data,
             'orders': data
         }
-        print("data : ", data)
+        # print("data : ", data)
         return render(request, 'orders.html', context)

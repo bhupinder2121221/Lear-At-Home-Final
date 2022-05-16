@@ -15,7 +15,7 @@ urlpatterns = [
     path('paytm/callback/', PaytmCallback.as_view(), name="paytm-callback"),
     path('place-order/<str:order_id>/',
          PlaceOrder.as_view(), name="placeorederView"),
-    path('check-payment/paytm/<str:id>/<str:email>/<str:tprice>',
+    path('check-payment/paytm/<str:id>/<str:email>/<str:tprice>/<str:address>',
          paymentCheckingView, name='checktransection'),
     # --------------------------------------------------------
     # ------------orders ----------------
