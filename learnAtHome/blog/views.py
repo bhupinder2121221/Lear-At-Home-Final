@@ -311,7 +311,7 @@ class friendPostView(LoginRequiredMixin, View):
         profile_response = requests.get('http://127.0.0.1:8000/api/profile/', headers={
                                         'Authorization': 'SecretToken '+str(request.session.get('token'))}, data={'username': friendEmail}).json()
         friendlist_response = get_friend_list(request).json()
-        print(aditional_data, profile_response, friendlist_response)
+        # print(aditional_data, profile_response, friendlist_response)
         redirecturlpath = "http://127.0.0.1:8000"+request.path
         context = {
             'posts': certain_page,
@@ -366,7 +366,7 @@ def followedView(request, pageno, SecondEmail, redirecturl):
     token = request.session.get('token')
     response = requests.post(
         endpoint, headers={'Authorization': 'SecretToken '+str(token)}, data=data)
-    print("respone from followedapi : ", response)
+    # print("respone from followedapi : ", response)
     # return HttpResponse("Follow page")
     return redirect(redirecturl.replace('&', "/"))
 
@@ -543,6 +543,7 @@ class New_PostPage(LoginRequiredMixin, View):
                     'otherdata': getdetailOfProfile(request.user.email)
 
                 }
+                return redirect('newPostUrl')
                 return render(request, 'newPost.html', context)
             # resutlt = requests.post("http://localhost:8000/api/user/", headers={
             # 'Authorization': "SecretToken "+str(request.session.get('token'))}, data = datajson)
@@ -576,6 +577,7 @@ class New_PostPage(LoginRequiredMixin, View):
                 'otherdata': getdetailOfProfile(request.user.email)
 
             }
+            return redirect('newPostUrl')
             return render(request, 'newPost.html', context)
 
             # if resutlt.json()['error'] == 'no error':
@@ -607,6 +609,7 @@ class New_PostPage(LoginRequiredMixin, View):
                 'otherdata': getdetailOfProfile(request.user.email)
 
             }
+            return redirect('newPostUrl')
             return render(request, 'newPost.html', context)
 
 # ----------------------------------------------------------------------------
@@ -648,7 +651,7 @@ def register_page(request):
                 email=myform.cleaned_data['email'])
             fl.save()
 
-            return HttpResponse('Success ! databse uploaded')
+            return redirect('loginUrl')
         return render(request, 'register.html', {'form': myform})
     else:
         myform = RegisterForm()
