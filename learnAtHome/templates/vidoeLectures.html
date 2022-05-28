@@ -1,7 +1,7 @@
 <!-- change not in superuser if command -->
 {% extends 'base.html' %} {% block blogs %}
 <div class="container">
-  {% if not superUser %}
+  {% if superUser %}
   <div class="text-end">
     <h1 id="addbtn" class="add-btn" onclick="expandLecturesDiv()">Add</h1>
   </div>

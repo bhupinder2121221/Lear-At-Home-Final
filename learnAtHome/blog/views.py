@@ -211,6 +211,7 @@ def user_homePage(request, pageno, filter=None):
         'pageno': pageno,
         'profile': profile_response.json(),
         'otherdata': aditional_data,
+        'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
         'user': True,
         # 'friendlist': friendlist_response.json(),
         'filterpath': urlpath,
@@ -319,6 +320,7 @@ class friendPostView(LoginRequiredMixin, View):
             'profile': profile_response,
             'otherdata': aditional_data,
             'user': True,
+            'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
             'myfeeds': True,
             'friendlist': friendlist_response,
             'friendpost': True,
@@ -885,6 +887,7 @@ class ClassroomHome(LoginRequiredMixin, View):  # global view
                 'profile': profile_response.json(),
                 'otherdata': aditional_data,
                 'classes': classes,
+                'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
                 'secondaryclasses': secondaryclasses,
                 'materials': materials,
                 'classroom': True,
@@ -892,7 +895,9 @@ class ClassroomHome(LoginRequiredMixin, View):  # global view
 
             }
             if request.user.is_staff:
-                context['superUser':True]
+                context['superUser'] = True
+            else:
+                context['superUser'] = False
             return render(request, 'classroom.html', context)
         else:
             context = {
@@ -903,7 +908,9 @@ class ClassroomHome(LoginRequiredMixin, View):  # global view
                 'classroom': True
             }
             if request.user.is_staff:
-                context['superUser':True]
+                context['superUser'] = True
+            else:
+                context['superUser'] = False
             return render(request, 'classroom.html', context)
 
 
@@ -952,7 +959,9 @@ class subjectsView(LoginRequiredMixin, View):
                 'classno': classno
             }
             if request.user.is_staff:
-                context['superUser':True]
+                context['superUser'] = True
+            else:
+                context['superUser'] = False
             return render(request, 'subjects.html', context)
 
     def get(self, request, classno):
@@ -970,7 +979,9 @@ class subjectsView(LoginRequiredMixin, View):
             'classno': classno
         }
         if request.user.is_staff:
-            context['superUser':True]
+            context['superUser'] = True
+        else:
+            context['superUser'] = False
         return render(request, 'subjects.html', context)
 
 
@@ -1024,7 +1035,9 @@ class LecturesView(LoginRequiredMixin, View):
             'classno': classno
         }
         if request.user.is_staff:
-            context['superUser':True]
+            context['superUser'] = True
+        else:
+            context['superUser'] = False
         if data != -1:
             context['videos_data'] = data
         else:
@@ -1138,7 +1151,8 @@ class BuyItem(LoginRequiredMixin, View):
         context = {
             'profile': profile_response.json(),
             'otherdata': aditional_data,
-            'form': form
+            'form': form,
+            'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
         }
 
         if item == "Books":
@@ -1150,7 +1164,10 @@ class BuyItem(LoginRequiredMixin, View):
             demo_data = getItemDetails(request, "Extra")
         context['bucket'] = demo_data
         context['classroom'] = True  # to hide the new post and filter button
-
+        if request.user.is_staff:
+            context['superUser'] = True
+        else:
+            context['superUser'] = False
         return render(request, 'buybooks.html', context)
 
 
@@ -1242,7 +1259,9 @@ class PlaceOrder(LoginRequiredMixin, View):
             'profile': profile_response.json(),
             'otherdata': aditional_data,
             'product': itemDetail,
-            'sellerInfo': sellerInfo
+            'sellerInfo': sellerInfo,
+            'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
+
 
         }
         return render(request, 'placeorder.html', context)
@@ -1354,7 +1373,8 @@ class OrderView(LoginRequiredMixin, View):
         context = {
             'profile': profile_response.json(),
             'otherdata': aditional_data,
-            'orders': data
+            'orders': data,
+            'coins': aditional_data['likes'] // 100 if aditional_data['likes'] // 100 <= 30 else 30,
         }
         # print("data : ", data)
         return render(request, 'orders.html', context)

@@ -122,16 +122,16 @@
           <div class="col" style="margin-left: 13px">SubTotal</div>
           <div class="col"></div>
           <div class="col text-end" style="margin-right: 10px">
-            <span>$</span>
+            <span>&#8377</span>
             <span id="subtotal">0</span>
           </div>
         </div>
         <!-- shipping -->
         <div class="row mt-2">
           <div class="col" style="margin-left: 13px">Shipping Charges</div>
-          <div class="col"></div>
+          
           <div class="col text-end" style="margin-right: 10px">
-            <span>$</span>
+            <span>&#8377</span>
             <span id="shipping">0</span>
           </div>
         </div>
@@ -140,17 +140,43 @@
           <div class="col" style="margin-left: 13px">Taxes</div>
           <div class="col"></div>
           <div class="col text-end" style="margin-right: 10px">
-            <span>$</span>
+            <span>&#8377</span>
             <span id="taxes">0</span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col" style="margin-left: 13px;color: red;font-weight: bold;">Magical Coins</div>
+        
+          <div class="col text-end" style="    margin-right: 10px;
+          font-size: 1.3rem;">
+            <img height=30 src="https://p.kindpng.com/picc/s/450-4509045_super-mario-coins-hd-png-download.png" /> 
+            <span id="coins" style="    color: red;
+            font-weight: bold;">10</span>
           </div>
         </div>
         <!-- total -->
         <div class="row mt-4">
-          <div class="col" style="margin-left: 13px">Total</div>
+          <div class="col" style="margin-left: 13px">Sub Total</div>
           <div class="col"></div>
           <div class="col text-end" style="margin-right: 10px">
-            <span>$</span>
+            <span>&#8377</span>
             <span id="total">0</span>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col" style="margin-left: 13px;color: red;font-weight: bold;">You Saved</div>
+          <div class="col"></div>
+          <div class="col text-end" style="margin-right: 10px;color: red;font-weight: bold;">
+            <span>&#8377</span>
+            <span id="savedprice">0</span>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col" style="margin-left: 13px;color: green;font-weight: bold;">Total After Discount</div>
+        
+          <div class="col text-end" style="margin-right: 10px;color: green;font-weight: bold;">
+            <span>&#8377</span>
+            <span id="totaldiscounted">0</span>
           </div>
         </div>
 
@@ -162,7 +188,9 @@
       <button type="submit"  class="btn btn-danger" style="width: 100%;
       font-size: 1.3rem;
       font-weight: bolder;
-      margin-bottom: 25px;">Place Order</button>
+      margin-bottom: 25px;">Place Order <span id="pricebtn" style="color: yellow;
+    font-weight: bold;
+    margin: 1px 9px 0px;"></span></button>
       </form>
     </main>
   </div>
@@ -220,12 +248,20 @@
 
   function priceCal(qty, productPrice) {
     let subtotal = qty * productPrice;
-    let shipping = qty * 30;
-    let taxes = +parseFloat((subtotal + shipping) * 0.18).toFixed(2);
-    let total = subtotal + shipping + taxes;
+    let shipping = qty * 10;
+    let taxes = +parseFloat((subtotal + shipping) * 0.05).toFixed(2);
+    let coins = parseInt(document.getElementById("coins").innerHTML);
+    let savedpricediv = document.getElementById("savedprice");
+    console.log("coins available : "+coins);
+    let total =subtotal + shipping + taxes;
+    let distotal = total * ((100 - coins)/100);
+    let discountedprice = document.getElementById("totaldiscounted");
+    discountedprice.innerHTML = distotal;
     document.getElementById('noOfItems').value = qty;
     console.log("Total counts : "+qty+"_"+document.getElementById('noOfItems').value)
-    document.getElementById("totalpriceHiddenField").value = total;
+    document.getElementById("totalpriceHiddenField").value = distotal;
+    savedpricediv.innerHTML = (total-distotal).toFixed(2);
+    document.getElementById("pricebtn").innerHTML = distotal;
     return { subtotal, shipping, taxes, total };
   }
  

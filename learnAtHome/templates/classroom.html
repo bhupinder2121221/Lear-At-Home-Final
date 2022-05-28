@@ -1,6 +1,6 @@
 <!-- remove not in if statement fo superuser -->
 
-{% extends 'base.html' %}{% load static%} {% block blogs %} {% if not superUser %}
+{% extends 'base.html' %}{% load static%} {% block blogs %} {% if superUser %}
 <div onclick="expandClassDiv()" style="cursor: pointer" class="text-end">
   <h1 id="addbtn" class="add-btn">Add Class</h1>
 </div>

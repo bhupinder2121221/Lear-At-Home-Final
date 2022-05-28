@@ -2,7 +2,7 @@
 <br />
 
 <div class="container mt-2">
-  {% block blogs %}
+  {% block blogs %} {% if superUser %}
   <div onclick="expandItemDiv()" style="cursor: pointer" class="text-end">
     <h1 id="addbtn" class="add-btn">Add Item</h1>
   </div>
@@ -55,8 +55,7 @@
       </div>
     </form>
   </div>
-
-  {% for itemCategory,v in bucket.items %}
+  {% endif %} {% for itemCategory,v in bucket.items %}
   <div
     id="block{{itemCategory}}"
     class="container item-heading"
