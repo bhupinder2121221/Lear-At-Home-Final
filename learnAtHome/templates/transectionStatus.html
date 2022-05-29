@@ -1,6 +1,31 @@
-{% extends 'base.html' %} {% block blogs %}
+{% extends 'base.html' %}{% load static %} {% block blogs %}
 <div class="container">
-  <div class="display-4 text-center">Payment Status</div>
-  <div class="text-center">{{status}}</div>
+  <div class="display-3 text-center" style="font-weight: bolder; color: red">
+    Payment Status
+  </div>
+  {% if status == 'Ordered Successfully'%}
+  <div
+    class="display-6 mt-3 text-center"
+    style="color: green; font-weight: bold"
+  >
+    {{status}}
+  </div>
+  <div class="container">
+    <img class="img-fluid" src="{% static 'images/greentick.png' %}" />
+  </div>
+  {% else %}
+  <div class="display-6 mt-3 text-center">{{status}}</div>
+  <div class="container text-center mt-3">
+    <img class="img-fluid" src="{% static 'images/redalert1.png' %}" />
+  </div>
+  {% endif %}
+  <div class="container text-center mt-2">
+    {% if status == 'Ordered Successfully'%}
+    <a href="{% url 'defaultHomeUrl' %}" class="btn btn-success">Go To Home</a>
+    {% else%}
+    <p>There might be server error. <br />Please try again later.</p>
+    <a href="{% url 'defaultHomeUrl' %}" class="btn btn-danger">Go To Home</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock blogs%}

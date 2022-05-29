@@ -13,7 +13,7 @@
   <h1 class="text-center text-danger">
     <b><i> Lessons </i></b>
   </h1>
-  {% if not superUser %}
+  {% if superUser %}
   <div id="add-lectures-div" class="container-fluid subjectDiv">
     <form action="" method="POST">
       {%csrf_token%}
@@ -36,12 +36,7 @@
     <a style="cursor: pointer; text-decoration: none" href="#">
       <div class="card" style="width: 100%; margin: 3px; display: inline-block">
         <div style="width: auto" class="classboxes">
-          <iframe
-            width="100%"
-            height="100%"
-            src="https://www.youtube.com/embed/tgbNymZ7vqY"
-          >
-          </iframe>
+          <iframe width="100%" height="100%" src="{{urls}}"> </iframe>
         </div>
         <div class="card-body">
           <p class="card-text text-center" style="font-size: 1.2rem">

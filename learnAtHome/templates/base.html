@@ -62,6 +62,8 @@
 
     <div id="basediv" class="container-fluid" style="max-width: 628px;">
         <!-- profile section -->
+        
+        {% if not transection %}
         <div class="row">
             <div class="col-12">
                 <div class="container-fluid">
@@ -70,9 +72,10 @@
                             <div class="col-12">
                                 <div class="container-fluid" style="position: fixed;">
                                 <h5 class="text-center" style="padding-top: 20px; display:inline-block ;">Profile</h5>
-                                <div onclick="navbarsection()" class="navbarclosebtn">X</div>
+                                <div onclick="navbarsection()" class="navbarclosebtn" style="    position: relative;
+                                top: -51px;">X</div>
                                 
-                                <div class="card profile" style="border:none;width:100%" >
+                                <div class="card profile" style="border:none;top: -60px; width:100%" >
                                     
                                     <img class="profilePic" src="{% static 'images/anonymous.jpeg'%}" alt="profile pic" />
                                      <div class="card-body">
@@ -105,9 +108,10 @@
                             <div class="col-3">
                                 <div class="container-fluid" style="position: fixed;">
                                 <h5 class="text-center" style="padding-top: 20px;">Profile</h5>
-                                <div onclick="navbarsection()" class="navbarclosebtn">X</div>
+                                <div onclick="navbarsection()" class="navbarclosebtn" style="    position: relative;
+                                top: -51px;">X</div>
                                 
-                                <div class="card profile" style="width: 100%;border:none; cursor: pointer;" >
+                                <div class="card profile" style="width: 100%;border:none;top: -60px; cursor: pointer;" >
                                     <div onclick="editprofileredirect()" class="container text-end" style="    position: relative;
                                     top: 33px;">
                                     <i class="fa-solid fa-pen-to-square" style="font-size: 1.5rem;"></i>
@@ -155,6 +159,7 @@
                         </div>
                 </div>
         </div>
+        {% endif %}
         
         <!-- profile section -->
 
@@ -162,6 +167,7 @@
         <div class="row " style="min-height: 100vh;">
             <div class="col-12">
                 <h1  class="text-start ml-2 text-light" style="font-size: 2.2rem;display: inline-block;margin-top: 4px;margin-left: 10px;">Learn At Home</h1>
+                {% if not transection %}
                 <span  class="profilemenu">
                     {% if not user %}
                     <img onclick="navbarsection()" class="profilelinkimage" src="{% static 'images/anonymous.jpeg'%}" alt="profile pic" />
@@ -172,6 +178,7 @@
                    
                     {% endif %}
                 </span>
+                {% endif %}
             </div>
             <div class="col-12" style="padding: 0px;">
                  <div class="container main-page" style="min-height: 100vh;padding-left: 0px;padding-right: 0px;">

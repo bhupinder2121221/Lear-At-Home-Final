@@ -40,6 +40,14 @@
   <h1 class="text-center text-danger">
     <b><i> Primary Classes </i></b>
   </h1>
+  <div style="
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: baseline;
+  justify-content: center;">
   {% for n,picture in classes.items %}
   <a
     style="cursor: pointer; text-decoration: none"
@@ -60,6 +68,7 @@
     </div>
   </a>
   {% endfor %}
+  </div>
 </div>
 <hr />
 <br />
@@ -72,7 +81,14 @@
       <i>Secondary Classes</i>
     </b>
   </h1>
+  <div style="
 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: baseline;
+  justify-content: center;">
   {% for n,picture in secondaryclasses.items %}
   <a
     style="cursor: pointer; text-decoration: none"
@@ -93,6 +109,7 @@
     </div>
   </a>
   {% endfor %}
+  </div>
 </div>
 <hr />
 <br />
@@ -100,6 +117,14 @@
   <b><i>Essential Material</i></b>
 </h1>
 <br />
+<div style="
+
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-content: center;
+align-items: baseline;
+justify-content: center;">
 {%for n in materials %}
 <div class="card" style="width: 10.8rem; margin: 3px; display: inline-block">
   <div class="classboxes">
@@ -113,4 +138,5 @@
     </div>
   </a>
 </div>
-{%endfor%} {% endblock blogs %}
+{%endfor%} 
+</div>{% endblock blogs %}

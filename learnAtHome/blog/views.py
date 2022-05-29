@@ -1043,6 +1043,7 @@ class LecturesView(LoginRequiredMixin, View):
         else:
             context['nodata'] = True
             context['videos_data'] = {}
+        print(data)
         return render(request, 'vidoeLectures.html', context)
 
 # ----------------- end classroom -------------------
@@ -1312,6 +1313,7 @@ def paymentCheckingView(request, id, email, tprice, address):
         # profile=profile_response.json(),
         # otherdata=aditional_data,
         status="Transection Failed",
+        transection = True
     )
     param_data = {}
     print("parameters dic", param_dict)
@@ -1333,7 +1335,7 @@ def paymentCheckingView(request, id, email, tprice, address):
             return render(request, 'transectionStatus.html', context)
         else:
             print("Payment is not verified")
-
+            
             return render(request, 'transectionStatus.html', context)
     return render(request, 'transectionStatus.html', context)
 
